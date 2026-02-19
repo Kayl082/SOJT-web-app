@@ -354,7 +354,7 @@ const menuOpen = ref(false);
 
 <style scoped>
 /* ── Google Fonts ──────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Lato:wght@300;400;700&family=Bebas+Neue&display=swap');
 
 /* ── CSS Variables ─────────────────────────────────────────── */
 .it-root {
@@ -416,17 +416,17 @@ const menuOpen = ref(false);
 
 /* Logo — flush left */
 .it-nav-logo {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 900;
-    font-size: 1.4rem;
-    color: var(--gold);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+    color: #fff8e3 !important;
     display: flex;
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
     margin-right: 40px;
 }
-
 .it-nav-logo-icon {
     width: 34px; height: 34px;
     background: var(--gold);
@@ -479,7 +479,7 @@ const menuOpen = ref(false);
     font-family: 'Lato', sans-serif;
     font-weight: 700;
     font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.82);
+    color: #fff8e3 !important;
     padding: 9px 20px;
     border-radius: 7px;
     white-space: nowrap;
@@ -487,7 +487,7 @@ const menuOpen = ref(false);
 }
 
 .it-btn-ghost-nav:hover {
-    color: #fff;
+    color: #fff8e3 !important;
     background: rgba(255, 255, 255, 0.08);
 }
 

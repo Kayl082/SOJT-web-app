@@ -23,15 +23,15 @@ class CreateNewUser implements CreatesNewUsers
             ...$this->profileRules(),
             'password' => $this->passwordRules(),
             'role' => ['required', 'in:customer,vendor'],
+            'phone' => ['nullable', 'string', 'max:20'],
         ])->validate();
-
-        $role = $input['role'] === 'vendor' ? 'vendor_owner' : 'customer';
 
         return User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],
-            'role' => $role,
+            'role' => $input['role'],
+            'phone' => $input['phone'] ?? null,
         ]);
     }
 }

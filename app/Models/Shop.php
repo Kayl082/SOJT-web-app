@@ -9,10 +9,17 @@ class Shop extends Model
 {
     use HasFactory;
 
+    protected $table = 'stores';
+
     protected $fillable = [
-        'name',
-        'description',
+        'owner_id',
+        'store_name',
         'address',
+        'city',
+        'latitude',
+        'longitude',
+        'phone',
+        'operating_hours',
         'is_active',
     ];
 
@@ -20,18 +27,18 @@ class Shop extends Model
         'is_active' => 'boolean',
     ];
 
-    public function users()
-    {
-        return $this->hasMany(User::class);
-    }
-
     public function owner()
     {
-        return $this->hasOne(User::class)->where('role', 'vendor_owner');
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'owner_id');
     }
 
     public function staff()
     {
-        return $this->hasMany(User::class)->where('role', 'vendor_staff');
+        return $this->hasMany(User::class, 'owner_id')->where('role', 'vendor_staff');
     }
 }

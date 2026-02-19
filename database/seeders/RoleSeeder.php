@@ -12,16 +12,8 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create a shop first
-        $shop = \App\Models\Shop::create([
-            'name' => 'Sample Grocery Store',
-            'description' => 'A local grocery store',
-            'address' => '123 Main St',
-            'is_active' => true,
-        ]);
-
         // Admin user
-        \App\Models\User::create([
+        $admin = \App\Models\User::create([
             'name' => 'Admin User',
             'email' => 'admin@itinda.com',
             'password' => bcrypt('password'),
@@ -30,22 +22,29 @@ class RoleSeeder extends Seeder
         ]);
 
         // Vendor Owner
-        \App\Models\User::create([
+        $vendorOwner = \App\Models\User::create([
             'name' => 'Shop Owner',
             'email' => 'owner@itinda.com',
             'password' => bcrypt('password'),
-            'role' => 'vendor_owner',
-            'shop_id' => $shop->id,
+            'role' => 'vendor',
             'email_verified_at' => now(),
         ]);
 
-        // Vendor Staff
+        // Create a store owned by the vendor
+        $store = \App\Models\Shop::create([
+            'owner_id' => $vendorOwner->id,
+            'store_name' => 'Sample Grocery Store',
+            'address' => '123 Main St',
+            'city' => 'Sample City',
+            'is_active' => true,
+        ]);
+
+        // Vendor Staff (also using 'vendor' role)
         \App\Models\User::create([
             'name' => 'Shop Staff',
             'email' => 'staff@itinda.com',
             'password' => bcrypt('password'),
-            'role' => 'vendor_staff',
-            'shop_id' => $shop->id,
+            'role' => 'vendor',
             'email_verified_at' => now(),
         ]);
 

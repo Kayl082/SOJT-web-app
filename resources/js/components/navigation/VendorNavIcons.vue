@@ -4,7 +4,7 @@ import { computed } from 'vue';
 
 const page = usePage();
 const user = computed(() => page.props.auth?.user);
-const isOwner = computed(() => user.value?.role === 'vendor_owner');
+const isOwner = computed(() => user.value?.role === 'vendor');
 </script>
 
 <template>

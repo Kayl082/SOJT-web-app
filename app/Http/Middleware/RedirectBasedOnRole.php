@@ -22,7 +22,7 @@ class RedirectBasedOnRole
             if ($request->is('dashboard')) {
                 return match($role) {
                     'admin' => redirect()->route('admin.dashboard'),
-                    'vendor_owner', 'vendor_staff' => redirect()->route('vendor.dashboard'),
+                    'vendor' => redirect()->route('vendor.dashboard'),
                     'customer' => redirect()->route('customer.dashboard'),
                     default => $next($request),
                 };

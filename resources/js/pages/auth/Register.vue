@@ -255,6 +255,22 @@ function selectRole(role: 'customer' | 'vendor') {
                         <InputError :message="errors.email" class="it-field-error" />
                     </div>
 
+                    <!-- Phone (optional) -->
+                    <div class="it-field">
+                        <Label for="phone" class="it-label">Phone number <span style="opacity: 0.5; font-size: 0.85em;">(optional)</span></Label>
+                        <div class="it-input-wrap">
+                            <span class="it-input-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                </svg>
+                            </span>
+                            <Input id="phone" type="tel" name="phone"
+                                :tabindex="3" autocomplete="tel" placeholder="+63 912 345 6789" class="it-input" />
+                        </div>
+                        <InputError :message="errors.phone" class="it-field-error" />
+                    </div>
+
                     <!-- Password -->
                     <div class="it-field">
                         <Label for="password" class="it-label">Password</Label>
@@ -266,7 +282,7 @@ function selectRole(role: 'customer' | 'vendor') {
                                 </svg>
                             </span>
                             <Input id="password" type="password" name="password" required
-                                :tabindex="3" autocomplete="new-password" placeholder="Create a password" class="it-input" />
+                                :tabindex="4" autocomplete="new-password" placeholder="Create a password" class="it-input" />
                         </div>
                         <InputError :message="errors.password" class="it-field-error" />
                     </div>
@@ -282,7 +298,7 @@ function selectRole(role: 'customer' | 'vendor') {
                                 </svg>
                             </span>
                             <Input id="password_confirmation" type="password" name="password_confirmation" required
-                                :tabindex="4" autocomplete="new-password" placeholder="Repeat your password" class="it-input" />
+                                :tabindex="5" autocomplete="new-password" placeholder="Repeat your password" class="it-input" />
                         </div>
                         <InputError :message="errors.password_confirmation" class="it-field-error" />
                     </div>
@@ -290,7 +306,7 @@ function selectRole(role: 'customer' | 'vendor') {
                     <!-- Submit -->
                     <Button
                         type="submit"
-                        :tabindex="5"
+                        :tabindex="6"
                         :disabled="processing || !selectedRole"
                         data-test="register-user-button"
                         class="it-submit-btn"
@@ -306,7 +322,7 @@ function selectRole(role: 'customer' | 'vendor') {
                     <!-- Login link -->
                     <p class="it-login-row">
                         Already have an account?
-                        <TextLink :href="login()" :tabindex="6" class="it-login-link">Log in</TextLink>
+                        <TextLink :href="login()" :tabindex="7" class="it-login-link">Log in</TextLink>
                     </p>
                 </Form>
 

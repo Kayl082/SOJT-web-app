@@ -23,7 +23,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'shop_id',
+        'phone',
     ];
 
     /**
@@ -52,9 +52,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function shop()
+    public function ownedStore()
     {
-        return $this->belongsTo(Shop::class);
+        return $this->hasOne(Shop::class, 'owner_id');
     }
 
     public function isAdmin()
@@ -62,14 +62,9 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
-    public function isVendorOwner()
+    public function isVendor()
     {
-        return $this->role === 'vendor_owner';
-    }
-
-    public function isVendorStaff()
-    {
-        return $this->role === 'vendor_staff';
+        return $this->role === 'vendor';
     }
 
     public function isCustomer()
