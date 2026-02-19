@@ -22,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'shop_id',
     ];
 
     /**
@@ -48,5 +50,30 @@ class User extends Authenticatable
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    public function shop()
+    {
+        return $this->belongsTo(Shop::class);
+    }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isVendorOwner()
+    {
+        return $this->role === 'vendor_owner';
+    }
+
+    public function isVendorStaff()
+    {
+        return $this->role === 'vendor_staff';
+    }
+
+    public function isCustomer()
+    {
+        return $this->role === 'customer';
     }
 }

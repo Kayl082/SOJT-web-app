@@ -1,842 +1,1322 @@
-<script setup lang="ts">
-import { Head, Link } from '@inertiajs/vue3';
-import { dashboard, login, register } from '@/routes';
-
-withDefaults(
-    defineProps<{
-        canRegister: boolean;
-    }>(),
-    {
-        canRegister: true,
-    },
-);
-</script>
-
 <template>
-    <Head title="Welcome">
-        <link rel="preconnect" href="https://rsms.me/" />
-        <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-    </Head>
-    <div
-        class="flex min-h-screen flex-col items-center bg-[#FDFDFC] p-6 text-[#1b1b18] lg:justify-center lg:p-8 dark:bg-[#0a0a0a]"
-    >
-        <header
-            class="mb-6 w-full max-w-[335px] text-sm not-has-[nav]:hidden lg:max-w-4xl"
-        >
-            <nav class="flex items-center justify-end gap-4">
-                <Link
-                    v-if="$page.props.auth.user"
-                    :href="dashboard()"
-                    class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                >
-                    Dashboard
-                </Link>
-                <template v-else>
-                    <Link
-                        :href="login()"
-                        class="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
-                    >
-                        Log in
+    <div class="it-root">
+
+        <!-- ── NAVBAR ──────────────────────────────────── -->
+        <nav class="it-nav">
+            <div class="it-container">
+                <div class="it-nav-inner">
+
+                    <!-- Logo -->
+                    <Link href="/" class="it-nav-logo">
+                        <div class="it-nav-logo-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        iTinda
                     </Link>
-                    <Link
-                        v-if="canRegister"
-                        :href="register()"
-                        class="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
-                    >
-                        Register
-                    </Link>
-                </template>
-            </nav>
+
+                    <!-- Desktop nav links -->
+                    <ul class="it-nav-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#vendors">For Vendors</a></li>
+                        <li><a href="#customers">For Customers</a></li>
+                    </ul>
+
+                    <!-- Desktop actions -->
+                    <div class="it-nav-actions">
+                        <Link href="/login" class="it-btn-ghost-nav">Login</Link>
+                        <Link href="/register" class="it-btn-gold-nav">Get Started</Link>
+                    </div>
+
+                    <!-- Mobile hamburger -->
+                    <button class="it-hamburger" @click="menuOpen = !menuOpen" aria-label="Toggle menu">
+                        <span :class="['it-ham-line', { 'it-ham-open-1': menuOpen }]"></span>
+                        <span :class="['it-ham-line', { 'it-ham-open-2': menuOpen }]"></span>
+                        <span :class="['it-ham-line', { 'it-ham-open-3': menuOpen }]"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile dropdown -->
+            <div :class="['it-mobile-menu', { 'it-mobile-menu-open': menuOpen }]">
+                <ul class="it-mobile-links">
+                    <li><a href="#features" @click="menuOpen = false">Features</a></li>
+                    <li><a href="#how-it-works" @click="menuOpen = false">How It Works</a></li>
+                    <li><a href="#vendors" @click="menuOpen = false">For Vendors</a></li>
+                    <li><a href="#customers" @click="menuOpen = false">For Customers</a></li>
+                </ul>
+                <div class="it-mobile-actions">
+                    <Link href="/login" class="it-mobile-login" @click="menuOpen = false">Login</Link>
+                    <Link href="/register" class="it-mobile-register" @click="menuOpen = false">Get Started</Link>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ── HERO ────────────────────────────────────── -->
+        <header class="it-hero">
+            <div class="it-container">
+                <div class="it-hero-inner">
+
+                    <!-- Left: copy -->
+                    <div class="it-hero-copy">
+                        <div class="it-hero-badge">
+                            <div class="it-hero-badge-dot"></div>
+                            Now live in your community
+                        </div>
+                        <h1 class="it-hero-h1">
+                            Connect with Local <span class="it-accent">Vendors</span> in Your Neighborhood
+                        </h1>
+                        <p class="it-hero-desc">
+                            Browse, compare prices, and pre-order from nearby shops.
+                            Vendors manage their entire store — inventory, expenses, analytics — all in one place.
+                        </p>
+                        <div class="it-hero-cta">
+                            <Link href="/register/vendor" class="it-btn-primary">Start Selling</Link>
+                            <Link href="/register/customer" class="it-btn-outline">Start Shopping</Link>
+                        </div>
+                      
+                         <div class="it-hero-stats">
+                            <div class="it-stat">
+                                <div class="it-stat-num">1,000+</div>
+                                <div class="it-stat-label">Local Businesses</div>
+                            </div>
+                            
+                            <div class="it-stat-divider"></div>
+                            <div class="it-stat">
+                                <div class="it-stat-num">10k+</div>
+                                <div class="it-stat-label">Happy Customers</div>
+                            </div>
+                            
+                        </div> 
+                    </div>
+
+                    <!-- Right: mock inventory card -->
+                    <div class="it-hero-visual">
+                        <div class="it-floating-tag it-tag-order">
+                            <div class="it-tag-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="it-tag-label">New Pre-order</div>
+                                <div class="it-tag-val">Organic Rice · 5kg</div>
+                            </div>
+                        </div>
+
+                        <div class="it-hero-card">
+                            <div class="it-hero-card-title">Store Inventory — Santos Grocery</div>
+                            <div class="it-hero-card-row">
+                                <span class="it-card-item">Fresh Eggs (tray)</span>
+                                <span class="it-card-price">₱185</span>
+                                <span class="it-card-badge it-badge-in">In Stock</span>
+                            </div>
+                            <div class="it-hero-card-row">
+                                <span class="it-card-item">Organic Rice (5kg)</span>
+                                <span class="it-card-price">₱320</span>
+                                <span class="it-card-badge it-badge-in">In Stock</span>
+                            </div>
+                            <div class="it-hero-card-row">
+                                <span class="it-card-item">Brown Sugar (1kg)</span>
+                                <span class="it-card-price">₱95</span>
+                                <span class="it-card-badge it-badge-low">Low Stock</span>
+                            </div>
+                            <div class="it-hero-card-row">
+                                <span class="it-card-item">Cooking Oil (1L)</span>
+                                <span class="it-card-price">₱140</span>
+                                <span class="it-card-badge it-badge-in">In Stock</span>
+                            </div>
+                        </div>
+
+                        <div class="it-floating-tag it-tag-vendor">
+                            <div class="it-tag-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="it-tag-label">This Week</div>
+                                <div class="it-tag-val">Sales +24%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
         </header>
-        <div
-            class="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0"
-        >
-            <main
-                class="flex w-full max-w-[335px] flex-col-reverse overflow-hidden rounded-lg lg:max-w-4xl lg:flex-row"
-            >
-                <div
-                    class="flex-1 rounded-br-lg rounded-bl-lg bg-white p-6 pb-12 text-[13px] leading-[20px] shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] lg:rounded-tl-lg lg:rounded-br-none lg:p-20 dark:bg-[#161615] dark:text-[#EDEDEC] dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]"
-                >
-                    <h1 class="mb-1 font-medium">Let's get started</h1>
-                    <p class="mb-2 text-[#706f6c] dark:text-[#A1A09A]">
-                        Laravel has an incredibly rich ecosystem. <br />We
-                        suggest starting with the following.
-                    </p>
-                    <ul class="mb-4 flex flex-col lg:mb-6">
-                        <li
-                            class="relative flex items-center gap-4 py-2 before:absolute before:top-1/2 before:bottom-0 before:left-[0.4rem] before:border-l before:border-[#e3e3e0] dark:before:border-[#3E3E3A]"
-                        >
-                            <span
-                                class="relative bg-white py-1 dark:bg-[#161615]"
-                            >
-                                <span
-                                    class="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-[#e3e3e0] bg-[#FDFDFC] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] dark:border-[#3E3E3A] dark:bg-[#161615]"
-                                >
-                                    <span
-                                        class="h-1.5 w-1.5 rounded-full bg-[#dbdbd7] dark:bg-[#3E3E3A]"
-                                    />
-                                </span>
-                            </span>
-                            <span>
-                                Read the
-                                <a
-                                    href="https://laravel.com/docs"
-                                    target="_blank"
-                                    class="ml-1 inline-flex items-center space-x-1 font-medium text-[#f53003] underline underline-offset-4 dark:text-[#FF4433]"
-                                >
-                                    <span>Documentation</span>
-                                    <svg
-                                        width="10"
-                                        height="11"
-                                        viewBox="0 0 10 11"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="h-2.5 w-2.5"
-                                    >
-                                        <path
-                                            d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001"
-                                            stroke="currentColor"
-                                            stroke-linecap="square"
-                                        />
-                                    </svg>
-                                </a>
-                            </span>
-                        </li>
-                        <li
-                            class="relative flex items-center gap-4 py-2 before:absolute before:top-0 before:bottom-1/2 before:left-[0.4rem] before:border-l before:border-[#e3e3e0] dark:before:border-[#3E3E3A]"
-                        >
-                            <span
-                                class="relative bg-white py-1 dark:bg-[#161615]"
-                            >
-                                <span
-                                    class="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-[#e3e3e0] bg-[#FDFDFC] shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] dark:border-[#3E3E3A] dark:bg-[#161615]"
-                                >
-                                    <span
-                                        class="h-1.5 w-1.5 rounded-full bg-[#dbdbd7] dark:bg-[#3E3E3A]"
-                                    />
-                                </span>
-                            </span>
-                            <span>
-                                Watch video tutorials at
-                                <a
-                                    href="https://laracasts.com"
-                                    target="_blank"
-                                    class="ml-1 inline-flex items-center space-x-1 font-medium text-[#f53003] underline underline-offset-4 dark:text-[#FF4433]"
-                                >
-                                    <span>Laracasts</span>
-                                    <svg
-                                        width="10"
-                                        height="11"
-                                        viewBox="0 0 10 11"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        class="h-2.5 w-2.5"
-                                    >
-                                        <path
-                                            d="M7.70833 6.95834V2.79167H3.54167M2.5 8L7.5 3.00001"
-                                            stroke="currentColor"
-                                            stroke-linecap="square"
-                                        />
-                                    </svg>
-                                </a>
-                            </span>
-                        </li>
-                    </ul>
-                    <ul class="flex gap-3 text-sm leading-normal">
-                        <li>
-                            <a
-                                href="https://cloud.laravel.com"
-                                target="_blank"
-                                class="inline-block rounded-sm border border-black bg-[#1b1b18] px-5 py-1.5 text-sm leading-normal text-white hover:border-black hover:bg-black dark:border-[#eeeeec] dark:bg-[#eeeeec] dark:text-[#1C1C1A] dark:hover:border-white dark:hover:bg-white"
-                            >
-                                Deploy now
-                            </a>
-                        </li>
-                    </ul>
+
+        <!-- ── FEATURES ────────────────────────────────── -->
+        <section id="features" class="it-features">
+            <div class="it-container">
+                <div class="it-section-header it-center">
+                    <div class="it-section-label">Platform Features</div>
+                    <h2 class="it-section-title">Everything You Need in One Platform</h2>
+                    <p class="it-section-sub">Powerful, role-based tools built for vendors, customers, and administrators.</p>
                 </div>
-                <div
-                    class="relative -mb-px aspect-335/376 w-full shrink-0 overflow-hidden rounded-t-lg bg-[#fff2f2] lg:mb-0 lg:-ml-px lg:aspect-auto lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg dark:bg-[#1D0002]"
-                >
-                    <svg
-                        class="w-full max-w-none translate-y-0 text-[#F53003] opacity-100 transition-all duration-750 dark:text-[#F61500] starting:translate-y-6 starting:opacity-0"
-                        viewBox="0 0 438 104"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path
-                            d="M17.2036 -3H0V102.197H49.5189V86.7187H17.2036V-3Z"
-                            fill="currentColor"
-                        />
-                        <path
-                            d="M110.256 41.6337C108.061 38.1275 104.945 35.3731 100.905 33.3681C96.8667 31.3647 92.8016 30.3618 88.7131 30.3618C83.4247 30.3618 78.5885 31.3389 74.201 33.2923C69.8111 35.2456 66.0474 37.928 62.9059 41.3333C59.7643 44.7401 57.3198 48.6726 55.5754 53.1293C53.8287 57.589 52.9572 62.274 52.9572 67.1813C52.9572 72.1925 53.8287 76.8995 55.5754 81.3069C57.3191 85.7173 59.7636 89.6241 62.9059 93.0293C66.0474 96.4361 69.8119 99.1155 74.201 101.069C78.5885 103.022 83.4247 103.999 88.7131 103.999C92.8016 103.999 96.8667 102.997 100.905 100.994C104.945 98.9911 108.061 96.2359 110.256 92.7282V102.195H126.563V32.1642H110.256V41.6337ZM108.76 75.7472C107.762 78.4531 106.366 80.8078 104.572 82.8112C102.776 84.8161 100.606 86.4183 98.0637 87.6206C95.5202 88.823 92.7004 89.4238 89.6103 89.4238C86.5178 89.4238 83.7252 88.823 81.2324 87.6206C78.7388 86.4183 76.5949 84.8161 74.7998 82.8112C73.004 80.8078 71.6319 78.4531 70.6856 75.7472C69.7356 73.0421 69.2644 70.1868 69.2644 67.1821C69.2644 64.1758 69.7356 61.3205 70.6856 58.6154C71.6319 55.9102 73.004 53.5571 74.7998 51.5522C76.5949 49.5495 78.738 47.9451 81.2324 46.7427C83.7252 45.5404 86.5178 44.9396 89.6103 44.9396C92.7012 44.9396 95.5202 45.5404 98.0637 46.7427C100.606 47.9451 102.776 49.5487 104.572 51.5522C106.367 53.5571 107.762 55.9102 108.76 58.6154C109.756 61.3205 110.256 64.1758 110.256 67.1821C110.256 70.1868 109.756 73.0421 108.76 75.7472Z"
-                            fill="currentColor"
-                        />
-                        <path
-                            d="M242.805 41.6337C240.611 38.1275 237.494 35.3731 233.455 33.3681C229.416 31.3647 225.351 30.3618 221.262 30.3618C215.974 30.3618 211.138 31.3389 206.75 33.2923C202.36 35.2456 198.597 37.928 195.455 41.3333C192.314 44.7401 189.869 48.6726 188.125 53.1293C186.378 57.589 185.507 62.274 185.507 67.1813C185.507 72.1925 186.378 76.8995 188.125 81.3069C189.868 85.7173 192.313 89.6241 195.455 93.0293C198.597 96.4361 202.361 99.1155 206.75 101.069C211.138 103.022 215.974 103.999 221.262 103.999C225.351 103.999 229.416 102.997 233.455 100.994C237.494 98.9911 240.611 96.2359 242.805 92.7282V102.195H259.112V32.1642H242.805V41.6337ZM241.31 75.7472C240.312 78.4531 238.916 80.8078 237.122 82.8112C235.326 84.8161 233.156 86.4183 230.614 87.6206C228.07 88.823 225.251 89.4238 222.16 89.4238C219.068 89.4238 216.275 88.823 213.782 87.6206C211.289 86.4183 209.145 84.8161 207.35 82.8112C205.554 80.8078 204.182 78.4531 203.236 75.7472C202.286 73.0421 201.814 70.1868 201.814 67.1821C201.814 64.1758 202.286 61.3205 203.236 58.6154C204.182 55.9102 205.554 53.5571 207.35 51.5522C209.145 49.5495 211.288 47.9451 213.782 46.7427C216.275 45.5404 219.068 44.9396 222.16 44.9396C225.251 44.9396 228.07 45.5404 230.614 46.7427C233.156 47.9451 235.326 49.5487 237.122 51.5522C238.917 53.5571 240.312 55.9102 241.31 58.6154C242.306 61.3205 242.806 64.1758 242.806 67.1821C242.805 70.1868 242.305 73.0421 241.31 75.7472Z"
-                            fill="currentColor"
-                        />
-                        <path
-                            d="M438 -3H421.694V102.197H438V-3Z"
-                            fill="currentColor"
-                        />
-                        <path
-                            d="M139.43 102.197H155.735V48.2834H183.712V32.1665H139.43V102.197Z"
-                            fill="currentColor"
-                        />
-                        <path
-                            d="M324.49 32.1665L303.995 85.794L283.498 32.1665H266.983L293.748 102.197H314.242L341.006 32.1665H324.49Z"
-                            fill="currentColor"
-                        />
-                        <path
-                            d="M376.571 30.3656C356.603 30.3656 340.797 46.8497 340.797 67.1828C340.797 89.6597 356.094 104 378.661 104C391.29 104 399.354 99.1488 409.206 88.5848L398.189 80.0226C398.183 80.031 389.874 90.9895 377.468 90.9895C363.048 90.9895 356.977 79.3111 356.977 73.269H411.075C413.917 50.1328 398.775 30.3656 376.571 30.3656ZM357.02 61.0967C357.145 59.7487 359.023 43.3761 376.442 43.3761C393.861 43.3761 395.978 59.7464 396.099 61.0967H357.02Z"
-                            fill="currentColor"
-                        />
-                    </svg>
-                    <svg
-                        class="relative -mt-[4.9rem] -ml-8 w-[448px] max-w-none lg:-mt-[6.6rem] lg:ml-0 dark:hidden"
-                        viewBox="0 0 440 376"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <g
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                        >
-                            <path
-                                d="M188.263 355.73L188.595 355.73C195.441 348.845 205.766 339.761 219.569 328.477C232.93 317.193 242.978 308.205 249.714 301.511C256.34 294.626 260.867 287.358 263.296 279.708C265.725 272.058 264.565 264.121 259.816 255.896C254.516 246.716 247.062 239.352 237.454 233.805C227.957 228.067 217.908 225.198 207.307 225.198C196.927 225.197 190.136 227.97 186.934 233.516C183.621 238.872 184.726 246.331 190.247 255.894L125.647 255.891C116.371 239.825 112.395 225.481 113.72 212.858C115.265 200.235 121.559 190.481 132.602 183.596C143.754 176.52 158.607 172.982 177.159 172.983C196.594 172.984 215.863 176.523 234.968 183.6C253.961 190.486 271.299 200.241 286.98 212.864C302.661 225.488 315.14 239.833 324.416 255.899C333.03 270.817 336.841 283.918 335.847 295.203C335.075 306.487 331.376 316.336 324.75 324.751C318.346 333.167 308.408 343.494 294.936 355.734L377.094 355.737L405.917 405.656L217.087 405.649L188.263 355.73Z"
-                                fill="black"
-                            />
-                            <path
-                                d="M9.11884 226.339L-13.7396 226.338L-42.7286 176.132L43.0733 176.135L175.595 405.649L112.651 405.647L9.11884 226.339Z"
-                                fill="black"
-                            />
-                            <path
-                                d="M188.263 355.73L188.595 355.73C195.441 348.845 205.766 339.761 219.569 328.477C232.93 317.193 242.978 308.205 249.714 301.511C256.34 294.626 260.867 287.358 263.296 279.708C265.725 272.058 264.565 264.121 259.816 255.896C254.516 246.716 247.062 239.352 237.454 233.805C227.957 228.067 217.908 225.198 207.307 225.198C196.927 225.197 190.136 227.97 186.934 233.516C183.621 238.872 184.726 246.331 190.247 255.894L125.647 255.891C116.371 239.825 112.395 225.481 113.72 212.858C115.265 200.235 121.559 190.481 132.602 183.596C143.754 176.52 158.607 172.982 177.159 172.983C196.594 172.984 215.863 176.523 234.968 183.6C253.961 190.486 271.299 200.241 286.98 212.864C302.661 225.488 315.14 239.833 324.416 255.899C333.03 270.817 336.841 283.918 335.847 295.203C335.075 306.487 331.376 316.336 324.75 324.751C318.346 333.167 308.408 343.494 294.936 355.734L377.094 355.737L405.917 405.656L217.087 405.649L188.263 355.73Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                            />
-                            <path
-                                d="M9.11884 226.339L-13.7396 226.338L-42.7286 176.132L43.0733 176.135L175.595 405.649L112.651 405.647L9.11884 226.339Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                            />
-                            <path
-                                d="M204.592 327.449L204.923 327.449C211.769 320.564 222.094 311.479 235.897 300.196C249.258 288.912 259.306 279.923 266.042 273.23C272.668 266.345 277.195 259.077 279.624 251.427C282.053 243.777 280.893 235.839 276.145 227.615C270.844 218.435 263.39 211.071 253.782 205.524C244.285 199.786 234.236 196.917 223.635 196.916C213.255 196.916 206.464 199.689 203.262 205.235C199.949 210.59 201.054 218.049 206.575 227.612L141.975 227.61C132.699 211.544 128.723 197.2 130.048 184.577C131.593 171.954 137.887 162.2 148.93 155.315C160.083 148.239 174.935 144.701 193.487 144.702C212.922 144.703 232.192 148.242 251.296 155.319C270.289 162.205 287.627 171.96 303.308 184.583C318.989 197.207 331.468 211.552 340.745 227.618C349.358 242.536 353.169 255.637 352.175 266.921C351.403 278.205 347.704 288.055 341.078 296.47C334.674 304.885 324.736 315.213 311.264 327.453L393.422 327.456L422.246 377.375L233.415 377.368L204.592 327.449Z"
-                                fill="#F8B803"
-                            />
-                            <path
-                                d="M25.447 198.058L2.58852 198.057L-26.4005 147.851L59.4015 147.854L191.923 377.368L128.979 377.365L25.447 198.058Z"
-                                fill="#F8B803"
-                            />
-                            <path
-                                d="M204.592 327.449L204.923 327.449C211.769 320.564 222.094 311.479 235.897 300.196C249.258 288.912 259.306 279.923 266.042 273.23C272.668 266.345 277.195 259.077 279.624 251.427C282.053 243.777 280.893 235.839 276.145 227.615C270.844 218.435 263.39 211.071 253.782 205.524C244.285 199.786 234.236 196.917 223.635 196.916C213.255 196.916 206.464 199.689 203.262 205.235C199.949 210.59 201.054 218.049 206.575 227.612L141.975 227.61C132.699 211.544 128.723 197.2 130.048 184.577C131.593 171.954 137.887 162.2 148.93 155.315C160.083 148.239 174.935 144.701 193.487 144.702C212.922 144.703 232.192 148.242 251.296 155.319C270.289 162.205 287.627 171.96 303.308 184.583C318.989 197.207 331.468 211.552 340.745 227.618C349.358 242.536 353.169 255.637 352.175 266.921C351.403 278.205 347.704 288.055 341.078 296.47C334.674 304.885 324.736 315.213 311.264 327.453L393.422 327.456L422.246 377.375L233.415 377.368L204.592 327.449Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                            />
-                            <path
-                                d="M25.447 198.058L2.58852 198.057L-26.4005 147.851L59.4015 147.854L191.923 377.368L128.979 377.365L25.447 198.058Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                            />
-                        </g>
-                        <g
-                            :style="{ mixBlendMode: 'hard-light' }"
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                        >
-                            <path
-                                d="M217.342 305.363L217.673 305.363C224.519 298.478 234.844 289.393 248.647 278.11C262.008 266.826 272.056 257.837 278.792 251.144C285.418 244.259 289.945 236.991 292.374 229.341C294.803 221.691 293.643 213.753 288.895 205.529C283.594 196.349 276.14 188.985 266.532 183.438C257.035 177.7 246.986 174.831 236.385 174.83C226.005 174.83 219.214 177.603 216.012 183.149C212.699 188.504 213.804 195.963 219.325 205.527L154.725 205.524C145.449 189.458 141.473 175.114 142.798 162.491C144.343 149.868 150.637 140.114 161.68 133.229C172.833 126.153 187.685 122.615 206.237 122.616C225.672 122.617 244.942 126.156 264.046 133.233C283.039 140.119 300.377 149.874 316.058 162.497C331.739 175.121 344.218 189.466 353.495 205.532C362.108 220.45 365.919 233.551 364.925 244.835C364.153 256.12 360.454 265.969 353.828 274.384C347.424 282.799 337.486 293.127 324.014 305.367L406.172 305.37L434.996 355.289L246.165 355.282L217.342 305.363Z"
-                                fill="#F0ACB8"
-                            />
-                            <path
-                                d="M38.197 175.972L15.3385 175.971L-13.6505 125.765L72.1515 125.768L204.673 355.282L141.729 355.279L38.197 175.972Z"
-                                fill="#F0ACB8"
-                            />
-                            <path
-                                d="M217.342 305.363L217.673 305.363C224.519 298.478 234.844 289.393 248.647 278.11C262.008 266.826 272.056 257.837 278.792 251.144C285.418 244.259 289.945 236.991 292.374 229.341C294.803 221.691 293.643 213.753 288.895 205.529C283.594 196.349 276.14 188.985 266.532 183.438C257.035 177.7 246.986 174.831 236.385 174.83C226.005 174.83 219.214 177.603 216.012 183.149C212.699 188.504 213.804 195.963 219.325 205.527L154.725 205.524C145.449 189.458 141.473 175.114 142.798 162.491C144.343 149.868 150.637 140.114 161.68 133.229C172.833 126.153 187.685 122.615 206.237 122.616C225.672 122.617 244.942 126.156 264.046 133.233C283.039 140.119 300.377 149.874 316.058 162.497C331.739 175.121 344.218 189.466 353.495 205.532C362.108 220.45 365.919 233.551 364.925 244.835C364.153 256.12 360.454 265.969 353.828 274.384C347.424 282.799 337.486 293.127 324.014 305.367L406.172 305.37L434.996 355.289L246.165 355.282L217.342 305.363Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                            />
-                            <path
-                                d="M38.197 175.972L15.3385 175.971L-13.6505 125.765L72.1515 125.768L204.673 355.282L141.729 355.279L38.197 175.972Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                            />
-                        </g>
-                        <g
-                            :style="`mixBlendMode: 'plus-darker'`"
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                        >
-                            <path
-                                d="M230.951 281.792L231.282 281.793C238.128 274.907 248.453 265.823 262.256 254.539C275.617 243.256 285.666 234.267 292.402 227.573C299.027 220.688 303.554 213.421 305.983 205.771C308.412 198.12 307.253 190.183 302.504 181.959C297.203 172.778 289.749 165.415 280.142 159.868C270.645 154.13 260.596 151.26 249.995 151.26C239.615 151.26 232.823 154.033 229.621 159.579C226.309 164.934 227.413 172.393 232.935 181.956L168.335 181.954C159.058 165.888 155.082 151.543 156.407 138.92C157.953 126.298 164.247 116.544 175.289 109.659C186.442 102.583 201.294 99.045 219.846 99.0457C239.281 99.0464 258.551 102.585 277.655 109.663C296.649 116.549 313.986 126.303 329.667 138.927C345.349 151.551 357.827 165.895 367.104 181.961C375.718 196.88 379.528 209.981 378.535 221.265C377.762 232.549 374.063 242.399 367.438 250.814C361.033 259.229 351.095 269.557 337.624 281.796L419.782 281.8L448.605 331.719L259.774 331.712L230.951 281.792Z"
-                                fill="#F3BEC7"
-                            />
-                            <path
-                                d="M51.8063 152.402L28.9479 152.401L-0.0411453 102.195L85.7608 102.198L218.282 331.711L155.339 331.709L51.8063 152.402Z"
-                                fill="#F3BEC7"
-                            />
-                            <path
-                                d="M230.951 281.792L231.282 281.793C238.128 274.907 248.453 265.823 262.256 254.539C275.617 243.256 285.666 234.267 292.402 227.573C299.027 220.688 303.554 213.421 305.983 205.771C308.412 198.12 307.253 190.183 302.504 181.959C297.203 172.778 289.749 165.415 280.142 159.868C270.645 154.13 260.596 151.26 249.995 151.26C239.615 151.26 232.823 154.033 229.621 159.579C226.309 164.934 227.413 172.393 232.935 181.956L168.335 181.954C159.058 165.888 155.082 151.543 156.407 138.92C157.953 126.298 164.247 116.544 175.289 109.659C186.442 102.583 201.294 99.045 219.846 99.0457C239.281 99.0464 258.551 102.585 277.655 109.663C296.649 116.549 313.986 126.303 329.667 138.927C345.349 151.551 357.827 165.895 367.104 181.961C375.718 196.88 379.528 209.981 378.535 221.265C377.762 232.549 374.063 242.399 367.438 250.814C361.033 259.229 351.095 269.557 337.624 281.796L419.782 281.8L448.605 331.719L259.774 331.712L230.951 281.792Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                            />
-                            <path
-                                d="M51.8063 152.402L28.9479 152.401L-0.0411453 102.195L85.7608 102.198L218.282 331.711L155.339 331.709L51.8063 152.402Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                            />
-                        </g>
-                        <g
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                        >
-                            <path
-                                d="M188.467 355.363L188.798 355.363C195.644 348.478 205.969 339.393 219.772 328.11C233.133 316.826 243.181 307.837 249.917 301.144C253.696 297.217 256.792 293.166 259.205 288.991C261.024 285.845 262.455 282.628 263.499 279.341C265.928 271.691 264.768 263.753 260.02 255.529C254.719 246.349 247.265 238.985 237.657 233.438C228.16 227.7 218.111 224.831 207.51 224.83C197.13 224.83 190.339 227.603 187.137 233.149C183.824 238.504 184.929 245.963 190.45 255.527L125.851 255.524C116.574 239.458 112.598 225.114 113.923 212.491C114.615 206.836 116.261 201.756 118.859 197.253C122.061 191.704 126.709 187.03 132.805 183.229C143.958 176.153 158.81 172.615 177.362 172.616C196.797 172.617 216.067 176.156 235.171 183.233C254.164 190.119 271.502 199.874 287.183 212.497C302.864 225.121 315.343 239.466 324.62 255.532C333.233 270.45 337.044 283.551 336.05 294.835C335.46 303.459 333.16 311.245 329.151 318.194C327.915 320.337 326.515 322.4 324.953 324.384C318.549 332.799 308.611 343.127 295.139 355.367L377.297 355.37L406.121 405.289L217.29 405.282L188.467 355.363Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M9.32197 225.972L-13.5365 225.971L-42.5255 175.765L43.2765 175.768L175.798 405.282L112.854 405.279L9.32197 225.972Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M345.247 111.915C329.566 99.2919 312.229 89.5371 293.235 82.6512L235.167 183.228C254.161 190.114 271.498 199.869 287.179 212.492L345.247 111.915Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M382.686 154.964C373.41 138.898 360.931 124.553 345.25 111.93L287.182 212.506C302.863 225.13 315.342 239.475 324.618 255.541L382.686 154.964Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M293.243 82.6472C274.139 75.57 254.869 72.031 235.434 72.0303L177.366 172.607C196.801 172.608 216.071 176.147 235.175 183.224L293.243 82.6472Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M394.118 194.257C395.112 182.973 391.301 169.872 382.688 154.953L324.619 255.53C333.233 270.448 337.044 283.55 336.05 294.834L394.118 194.257Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M235.432 72.0311C216.88 72.0304 202.027 75.5681 190.875 82.6442L132.806 183.221C143.959 176.145 158.812 172.607 177.363 172.608L235.432 72.0311Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M265.59 124.25C276.191 124.251 286.24 127.12 295.737 132.858L237.669 233.435C228.172 227.697 218.123 224.828 207.522 224.827L265.59 124.25Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M295.719 132.859C305.326 138.406 312.78 145.77 318.081 154.95L260.013 255.527C254.712 246.347 247.258 238.983 237.651 233.436L295.719 132.859Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M387.218 217.608C391.227 210.66 393.527 202.874 394.117 194.25L336.049 294.827C335.459 303.451 333.159 311.237 329.15 318.185L387.218 217.608Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M245.211 132.577C248.413 127.03 255.204 124.257 265.584 124.258L207.516 224.835C197.136 224.834 190.345 227.607 187.143 233.154L245.211 132.577Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M318.094 154.945C322.842 163.17 324.002 171.107 321.573 178.757L263.505 279.334C265.934 271.684 264.774 263.746 260.026 255.522L318.094 154.945Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M176.925 96.6737C180.127 91.1249 184.776 86.4503 190.871 82.6499L132.803 183.227C126.708 187.027 122.059 191.702 118.857 197.25L176.925 96.6737Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M387.226 217.606C385.989 219.749 384.59 221.813 383.028 223.797L324.96 324.373C326.522 322.39 327.921 320.326 329.157 318.183L387.226 217.606Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M317.269 188.408C319.087 185.262 320.519 182.045 321.562 178.758L263.494 279.335C262.451 282.622 261.019 285.839 259.201 288.985L317.269 188.408Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M245.208 132.573C241.895 137.928 243 145.387 248.522 154.95L190.454 255.527C184.932 245.964 183.827 238.505 187.14 233.15L245.208 132.573Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M176.93 96.6719C174.331 101.175 172.686 106.255 171.993 111.91L113.925 212.487C114.618 206.831 116.263 201.752 118.862 197.249L176.93 96.6719Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M317.266 188.413C314.853 192.589 311.757 196.64 307.978 200.566L249.91 301.143C253.689 297.216 256.785 293.166 259.198 288.99L317.266 188.413Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M464.198 304.708L435.375 254.789L377.307 355.366L406.13 405.285L464.198 304.708Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M353.209 254.787C366.68 242.548 376.618 232.22 383.023 223.805L324.955 324.382C318.55 332.797 308.612 343.124 295.141 355.364L353.209 254.787Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M435.37 254.787L353.212 254.784L295.144 355.361L377.302 355.364L435.37 254.787Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M183.921 154.947L248.521 154.95L190.453 255.527L125.853 255.524L183.921 154.947Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M171.992 111.914C170.668 124.537 174.643 138.881 183.92 154.947L125.852 255.524C116.575 239.458 112.599 225.114 113.924 212.491L171.992 111.914Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M307.987 200.562C301.251 207.256 291.203 216.244 277.842 227.528L219.774 328.105C233.135 316.821 243.183 307.832 249.919 301.139L307.987 200.562Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M15.5469 75.1797L44.5359 125.386L-13.5321 225.963L-42.5212 175.756L15.5469 75.1797Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M277.836 227.536C264.033 238.82 253.708 247.904 246.862 254.789L188.794 355.366C195.64 348.481 205.965 339.397 219.768 328.113L277.836 227.536Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M275.358 304.706L464.189 304.713L406.12 405.29L217.29 405.283L275.358 304.706Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M44.5279 125.39L67.3864 125.39L9.31834 225.967L-13.5401 225.966L44.5279 125.39Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M101.341 75.1911L233.863 304.705L175.795 405.282L43.2733 175.768L101.341 75.1911ZM15.5431 75.19L-42.525 175.767L43.277 175.77L101.345 75.1932L15.5431 75.19Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M246.866 254.784L246.534 254.784L188.466 355.361L188.798 355.361L246.866 254.784Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M246.539 254.781L275.362 304.701L217.294 405.277L188.471 355.358L246.539 254.781Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M67.3906 125.391L170.923 304.698L112.855 405.275L9.32257 225.967L67.3906 125.391Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M170.921 304.699L233.865 304.701L175.797 405.278L112.853 405.276L170.921 304.699Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                        </g>
-                        <g
-                            :style="{ mixBlendMode: 'hard-light' }"
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                        >
-                            <path
-                                d="M246.544 254.79L246.875 254.79C253.722 247.905 264.046 238.82 277.849 227.537C291.21 216.253 301.259 207.264 307.995 200.57C314.62 193.685 319.147 186.418 321.577 178.768C324.006 171.117 322.846 163.18 318.097 154.956C312.796 145.775 305.342 138.412 295.735 132.865C286.238 127.127 276.189 124.258 265.588 124.257C255.208 124.257 248.416 127.03 245.214 132.576C241.902 137.931 243.006 145.39 248.528 154.953L183.928 154.951C174.652 138.885 170.676 124.541 172 111.918C173.546 99.2946 179.84 89.5408 190.882 82.6559C202.035 75.5798 216.887 72.0421 235.439 72.0428C254.874 72.0435 274.144 75.5825 293.248 82.6598C312.242 89.5457 329.579 99.3005 345.261 111.924C360.942 124.548 373.421 138.892 382.697 154.958C391.311 169.877 395.121 182.978 394.128 194.262C393.355 205.546 389.656 215.396 383.031 223.811C376.627 232.226 366.688 242.554 353.217 254.794L435.375 254.797L464.198 304.716L275.367 304.709L246.544 254.79Z"
-                                fill="#F0ACB8"
-                            />
-                            <path
-                                d="M246.544 254.79L246.875 254.79C253.722 247.905 264.046 238.82 277.849 227.537C291.21 216.253 301.259 207.264 307.995 200.57C314.62 193.685 319.147 186.418 321.577 178.768C324.006 171.117 322.846 163.18 318.097 154.956C312.796 145.775 305.342 138.412 295.735 132.865C286.238 127.127 276.189 124.258 265.588 124.257C255.208 124.257 248.416 127.03 245.214 132.576C241.902 137.931 243.006 145.39 248.528 154.953L183.928 154.951C174.652 138.885 170.676 124.541 172 111.918C173.546 99.2946 179.84 89.5408 190.882 82.6559C202.035 75.5798 216.887 72.0421 235.439 72.0428C254.874 72.0435 274.144 75.5825 293.248 82.6598C312.242 89.5457 329.579 99.3005 345.261 111.924C360.942 124.548 373.421 138.892 382.697 154.958C391.311 169.877 395.121 182.978 394.128 194.262C393.355 205.546 389.656 215.396 383.031 223.811C376.627 232.226 366.688 242.554 353.217 254.794L435.375 254.797L464.198 304.716L275.367 304.709L246.544 254.79Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                                stroke-linejoin="round"
-                            />
-                        </g>
-                        <g
-                            :style="{ mixBlendMode: 'hard-light' }"
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                        >
-                            <path
-                                d="M67.41 125.402L44.5515 125.401L15.5625 75.1953L101.364 75.1985L233.886 304.712L170.942 304.71L67.41 125.402Z"
-                                fill="#F0ACB8"
-                            />
-                            <path
-                                d="M67.41 125.402L44.5515 125.401L15.5625 75.1953L101.364 75.1985L233.886 304.712L170.942 304.71L67.41 125.402Z"
-                                stroke="#1B1B18"
-                                stroke-width="1"
-                            />
-                        </g>
-                    </svg>
-                    <svg
-                        class="relative -mt-[4.9rem] -ml-8 hidden w-[448px] max-w-none lg:-mt-[6.6rem] lg:ml-0 dark:block"
-                        viewBox="0 0 440 376"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <g
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                        >
-                            <path
-                                d="M188.263 355.73L188.595 355.73C195.441 348.845 205.766 339.761 219.569 328.477C232.93 317.193 242.978 308.205 249.714 301.511C256.34 294.626 260.867 287.358 263.296 279.708C265.725 272.058 264.565 264.121 259.816 255.896C254.516 246.716 247.062 239.352 237.454 233.805C227.957 228.067 217.908 225.198 207.307 225.198C196.927 225.197 190.136 227.97 186.934 233.516C183.621 238.872 184.726 246.331 190.247 255.894L125.647 255.891C116.371 239.825 112.395 225.481 113.72 212.858C115.265 200.235 121.559 190.481 132.602 183.596C143.754 176.52 158.607 172.982 177.159 172.983C196.594 172.984 215.863 176.523 234.968 183.6C253.961 190.486 271.299 200.241 286.98 212.864C302.661 225.488 315.14 239.833 324.416 255.899C333.03 270.817 336.841 283.918 335.847 295.203C335.075 306.487 331.376 316.336 324.75 324.751C318.346 333.167 308.408 343.494 294.936 355.734L377.094 355.737L405.917 405.656L217.087 405.649L188.263 355.73Z"
-                                fill="black"
-                            />
-                            <path
-                                d="M9.11884 226.339L-13.7396 226.338L-42.7286 176.132L43.0733 176.135L175.595 405.649L112.651 405.647L9.11884 226.339Z"
-                                fill="black"
-                            />
-                            <path
-                                d="M188.263 355.73L188.595 355.73C195.441 348.845 205.766 339.761 219.569 328.477C232.93 317.193 242.978 308.205 249.714 301.511C256.34 294.626 260.867 287.358 263.296 279.708C265.725 272.058 264.565 264.121 259.816 255.896C254.516 246.716 247.062 239.352 237.454 233.805C227.957 228.067 217.908 225.198 207.307 225.198C196.927 225.197 190.136 227.97 186.934 233.516C183.621 238.872 184.726 246.331 190.247 255.894L125.647 255.891C116.371 239.825 112.395 225.481 113.72 212.858C115.265 200.235 121.559 190.481 132.602 183.596C143.754 176.52 158.607 172.982 177.159 172.983C196.594 172.984 215.863 176.523 234.968 183.6C253.961 190.486 271.299 200.241 286.98 212.864C302.661 225.488 315.14 239.833 324.416 255.899C333.03 270.817 336.841 283.918 335.847 295.203C335.075 306.487 331.376 316.336 324.75 324.751C318.346 333.167 308.408 343.494 294.936 355.734L377.094 355.737L405.917 405.656L217.087 405.649L188.263 355.73Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                            />
-                            <path
-                                d="M9.11884 226.339L-13.7396 226.338L-42.7286 176.132L43.0733 176.135L175.595 405.649L112.651 405.647L9.11884 226.339Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                            />
-                            <path
-                                d="M204.592 327.449L204.923 327.449C211.769 320.564 222.094 311.479 235.897 300.196C249.258 288.912 259.306 279.923 266.042 273.23C272.668 266.345 277.195 259.077 279.624 251.427C282.053 243.777 280.893 235.839 276.145 227.615C270.844 218.435 263.39 211.071 253.782 205.524C244.285 199.786 234.236 196.917 223.635 196.916C213.255 196.916 206.464 199.689 203.262 205.235C199.949 210.59 201.054 218.049 206.575 227.612L141.975 227.61C132.699 211.544 128.723 197.2 130.048 184.577C131.593 171.954 137.887 162.2 148.93 155.315C160.083 148.239 174.935 144.701 193.487 144.702C212.922 144.703 232.192 148.242 251.296 155.319C270.289 162.205 287.627 171.96 303.308 184.583C318.989 197.207 331.468 211.552 340.745 227.618C349.358 242.536 353.169 255.637 352.175 266.921C351.403 278.205 347.704 288.055 341.078 296.47C334.674 304.885 324.736 315.213 311.264 327.453L393.422 327.456L422.246 377.375L233.415 377.368L204.592 327.449Z"
-                                fill="#391800"
-                            />
-                            <path
-                                d="M25.447 198.058L2.58852 198.057L-26.4005 147.851L59.4015 147.854L191.923 377.368L128.979 377.365L25.447 198.058Z"
-                                fill="#391800"
-                            />
-                            <path
-                                d="M204.592 327.449L204.923 327.449C211.769 320.564 222.094 311.479 235.897 300.196C249.258 288.912 259.306 279.923 266.042 273.23C272.668 266.345 277.195 259.077 279.624 251.427C282.053 243.777 280.893 235.839 276.145 227.615C270.844 218.435 263.39 211.071 253.782 205.524C244.285 199.786 234.236 196.917 223.635 196.916C213.255 196.916 206.464 199.689 203.262 205.235C199.949 210.59 201.054 218.049 206.575 227.612L141.975 227.61C132.699 211.544 128.723 197.2 130.048 184.577C131.593 171.954 137.887 162.2 148.93 155.315C160.083 148.239 174.935 144.701 193.487 144.702C212.922 144.703 232.192 148.242 251.296 155.319C270.289 162.205 287.627 171.96 303.308 184.583C318.989 197.207 331.468 211.552 340.745 227.618C349.358 242.536 353.169 255.637 352.175 266.921C351.403 278.205 347.704 288.055 341.078 296.47C334.674 304.885 324.736 315.213 311.264 327.453L393.422 327.456L422.246 377.375L233.415 377.368L204.592 327.449Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                            />
-                            <path
-                                d="M25.447 198.058L2.58852 198.057L-26.4005 147.851L59.4015 147.854L191.923 377.368L128.979 377.365L25.447 198.058Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                            />
-                        </g>
-                        <g
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                            :style="{ mixBlendMode: 'hard-light' }"
-                        >
-                            <path
-                                d="M217.342 305.363L217.673 305.363C224.519 298.478 234.844 289.393 248.647 278.11C262.008 266.826 272.056 257.837 278.792 251.144C285.418 244.259 289.945 236.991 292.374 229.341C294.803 221.691 293.643 213.753 288.895 205.529C283.594 196.349 276.14 188.985 266.532 183.438C257.035 177.7 246.986 174.831 236.385 174.83C226.005 174.83 219.214 177.603 216.012 183.149C212.699 188.504 213.804 195.963 219.325 205.527L154.725 205.524C145.449 189.458 141.473 175.114 142.798 162.491C144.343 149.868 150.637 140.114 161.68 133.229C172.833 126.153 187.685 122.615 206.237 122.616C225.672 122.617 244.942 126.156 264.046 133.233C283.039 140.119 300.377 149.874 316.058 162.497C331.739 175.121 344.218 189.466 353.495 205.532C362.108 220.45 365.919 233.551 364.925 244.835C364.153 256.12 360.454 265.969 353.828 274.384C347.424 282.799 337.486 293.127 324.014 305.367L406.172 305.37L434.996 355.289L246.165 355.282L217.342 305.363Z"
-                                fill="#733000"
-                            />
-                            <path
-                                d="M38.197 175.972L15.3385 175.971L-13.6505 125.765L72.1515 125.768L204.673 355.282L141.729 355.279L38.197 175.972Z"
-                                fill="#733000"
-                            />
-                            <path
-                                d="M217.342 305.363L217.673 305.363C224.519 298.478 234.844 289.393 248.647 278.11C262.008 266.826 272.056 257.837 278.792 251.144C285.418 244.259 289.945 236.991 292.374 229.341C294.803 221.691 293.643 213.753 288.895 205.529C283.594 196.349 276.14 188.985 266.532 183.438C257.035 177.7 246.986 174.831 236.385 174.83C226.005 174.83 219.214 177.603 216.012 183.149C212.699 188.504 213.804 195.963 219.325 205.527L154.725 205.524C145.449 189.458 141.473 175.114 142.798 162.491C144.343 149.868 150.637 140.114 161.68 133.229C172.833 126.153 187.685 122.615 206.237 122.616C225.672 122.617 244.942 126.156 264.046 133.233C283.039 140.119 300.377 149.874 316.058 162.497C331.739 175.121 344.218 189.466 353.495 205.532C362.108 220.45 365.919 233.551 364.925 244.835C364.153 256.12 360.454 265.969 353.828 274.384C347.424 282.799 337.486 293.127 324.014 305.367L406.172 305.37L434.996 355.289L246.165 355.282L217.342 305.363Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                            />
-                            <path
-                                d="M38.197 175.972L15.3385 175.971L-13.6505 125.765L72.1515 125.768L204.673 355.282L141.729 355.279L38.197 175.972Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                            />
-                        </g>
-                        <g
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                        >
-                            <path
-                                d="M217.342 305.363L217.673 305.363C224.519 298.478 234.844 289.393 248.647 278.11C262.008 266.826 272.056 257.837 278.792 251.144C285.418 244.259 289.945 236.991 292.374 229.341C294.803 221.691 293.643 213.753 288.895 205.529C283.594 196.349 276.14 188.985 266.532 183.438C257.035 177.7 246.986 174.831 236.385 174.83C226.005 174.83 219.214 177.603 216.012 183.149C212.699 188.504 213.804 195.963 219.325 205.527L154.726 205.524C145.449 189.458 141.473 175.114 142.798 162.491C144.343 149.868 150.637 140.114 161.68 133.229C172.833 126.153 187.685 122.615 206.237 122.616C225.672 122.617 244.942 126.156 264.046 133.233C283.039 140.119 300.377 149.874 316.058 162.497C331.739 175.121 344.218 189.466 353.495 205.532C362.108 220.45 365.919 233.551 364.925 244.835C364.153 256.12 360.454 265.969 353.828 274.384C347.424 282.799 337.486 293.127 324.014 305.367L406.172 305.37L434.996 355.289L246.165 355.282L217.342 305.363Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                            />
-                            <path
-                                d="M38.197 175.972L15.3385 175.971L-13.6505 125.765L72.1515 125.768L204.673 355.282L141.729 355.279L38.197 175.972Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                            />
-                        </g>
-                        <g
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                        >
-                            <path
-                                d="M188.467 355.363L188.798 355.363C195.644 348.478 205.969 339.393 219.772 328.11C233.133 316.826 243.181 307.837 249.917 301.144C253.696 297.217 256.792 293.166 259.205 288.991C261.024 285.845 262.455 282.628 263.499 279.341C265.928 271.691 264.768 263.753 260.02 255.529C254.719 246.349 247.265 238.985 237.657 233.438C228.16 227.7 218.111 224.831 207.51 224.83C197.13 224.83 190.339 227.603 187.137 233.149C183.824 238.504 184.929 245.963 190.45 255.527L125.851 255.524C116.574 239.458 112.598 225.114 113.923 212.491C114.615 206.836 116.261 201.756 118.859 197.253C122.061 191.704 126.709 187.03 132.805 183.229C143.958 176.153 158.81 172.615 177.362 172.616C196.797 172.617 216.067 176.156 235.171 183.233C254.164 190.119 271.502 199.874 287.183 212.497C302.864 225.121 315.343 239.466 324.62 255.532C333.233 270.45 337.044 283.551 336.05 294.835C335.46 303.459 333.16 311.245 329.151 318.194C327.915 320.337 326.515 322.4 324.953 324.384C318.549 332.799 308.611 343.127 295.139 355.367L377.297 355.37L406.121 405.289L217.29 405.282L188.467 355.363Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M9.32197 225.972L-13.5365 225.971L-42.5255 175.765L43.2765 175.768L175.798 405.282L112.854 405.279L9.32197 225.972Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M345.247 111.915C329.566 99.2919 312.229 89.5371 293.235 82.6512L235.167 183.228C254.161 190.114 271.498 199.869 287.179 212.492L345.247 111.915Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M382.686 154.964C373.41 138.898 360.931 124.553 345.25 111.93L287.182 212.506C302.863 225.13 315.342 239.475 324.618 255.541L382.686 154.964Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M293.243 82.6472C274.139 75.57 254.869 72.031 235.434 72.0303L177.366 172.607C196.801 172.608 216.071 176.147 235.175 183.224L293.243 82.6472Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M394.118 194.257C395.112 182.973 391.301 169.872 382.688 154.953L324.619 255.53C333.233 270.448 337.044 283.55 336.05 294.834L394.118 194.257Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M235.432 72.0311C216.88 72.0304 202.027 75.5681 190.875 82.6442L132.806 183.221C143.959 176.145 158.812 172.607 177.363 172.608L235.432 72.0311Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M265.59 124.25C276.191 124.251 286.24 127.12 295.737 132.858L237.669 233.435C228.172 227.697 218.123 224.828 207.522 224.827L265.59 124.25Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M295.719 132.859C305.326 138.406 312.78 145.77 318.081 154.95L260.013 255.527C254.712 246.347 247.258 238.983 237.651 233.436L295.719 132.859Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M387.218 217.608C391.227 210.66 393.527 202.874 394.117 194.25L336.049 294.827C335.459 303.451 333.159 311.237 329.15 318.185L387.218 217.608Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M245.211 132.577C248.413 127.03 255.204 124.257 265.584 124.258L207.516 224.835C197.136 224.834 190.345 227.607 187.143 233.154L245.211 132.577Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M318.094 154.945C322.842 163.17 324.002 171.107 321.573 178.757L263.505 279.334C265.934 271.684 264.774 263.746 260.026 255.522L318.094 154.945Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M176.925 96.6737C180.127 91.1249 184.776 86.4503 190.871 82.6499L132.803 183.227C126.708 187.027 122.059 191.702 118.857 197.25L176.925 96.6737Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M387.226 217.606C385.989 219.749 384.59 221.813 383.028 223.797L324.96 324.373C326.522 322.39 327.921 320.326 329.157 318.183L387.226 217.606Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M317.269 188.408C319.087 185.262 320.519 182.045 321.562 178.758L263.494 279.335C262.451 282.622 261.019 285.839 259.201 288.985L317.269 188.408Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M245.208 132.573C241.895 137.928 243 145.387 248.522 154.95L190.454 255.527C184.932 245.964 183.827 238.505 187.14 233.15L245.208 132.573Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M176.93 96.6719C174.331 101.175 172.686 106.255 171.993 111.91L113.925 212.487C114.618 206.831 116.263 201.752 118.862 197.249L176.93 96.6719Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M317.266 188.413C314.853 192.589 311.757 196.64 307.978 200.566L249.91 301.143C253.689 297.216 256.785 293.166 259.198 288.99L317.266 188.413Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M464.198 304.708L435.375 254.789L377.307 355.366L406.13 405.285L464.198 304.708Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M353.209 254.787C366.68 242.548 376.618 232.22 383.023 223.805L324.955 324.382C318.55 332.797 308.612 343.124 295.141 355.364L353.209 254.787Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M435.37 254.787L353.212 254.784L295.144 355.361L377.302 355.364L435.37 254.787Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M183.921 154.947L248.521 154.95L190.453 255.527L125.853 255.524L183.921 154.947Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M171.992 111.914C170.668 124.537 174.643 138.881 183.92 154.947L125.852 255.524C116.575 239.458 112.599 225.114 113.924 212.491L171.992 111.914Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M307.987 200.562C301.251 207.256 291.203 216.244 277.842 227.528L219.774 328.105C233.135 316.821 243.183 307.832 249.919 301.139L307.987 200.562Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M15.5469 75.1797L44.5359 125.386L-13.5321 225.963L-42.5212 175.756L15.5469 75.1797Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M277.836 227.536C264.033 238.82 253.708 247.904 246.862 254.789L188.794 355.366C195.64 348.481 205.965 339.397 219.768 328.113L277.836 227.536Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M275.358 304.706L464.189 304.713L406.12 405.29L217.29 405.283L275.358 304.706Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M44.5279 125.39L67.3864 125.39L9.31834 225.967L-13.5401 225.966L44.5279 125.39Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M101.341 75.1911L233.863 304.705L175.795 405.282L43.2733 175.768L101.341 75.1911ZM15.5431 75.19L-42.525 175.767L43.277 175.77L101.345 75.1932L15.5431 75.19Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M246.866 254.784L246.534 254.784L188.466 355.361L188.798 355.361L246.866 254.784Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M246.539 254.781L275.362 304.701L217.294 405.277L188.471 355.358L246.539 254.781Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M67.3906 125.391L170.923 304.698L112.855 405.275L9.32257 225.967L67.3906 125.391Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                            <path
-                                d="M170.921 304.699L233.865 304.701L175.797 405.278L112.853 405.276L170.921 304.699Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="bevel"
-                            />
-                        </g>
-                        <g
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                            :style="{ mixBlendMode: 'hard-light' }"
-                        >
-                            <path
-                                d="M246.544 254.79L246.875 254.79C253.722 247.905 264.046 238.82 277.849 227.537C291.21 216.253 301.259 207.264 307.995 200.57C314.62 193.685 319.147 186.418 321.577 178.768C324.006 171.117 322.846 163.18 318.097 154.956C312.796 145.775 305.342 138.412 295.735 132.865C286.238 127.127 276.189 124.258 265.588 124.257C255.208 124.257 248.416 127.03 245.214 132.576C241.902 137.931 243.006 145.39 248.528 154.953L183.928 154.951C174.652 138.885 170.676 124.541 172 111.918C173.546 99.2946 179.84 89.5408 190.882 82.6559C202.035 75.5798 216.887 72.0421 235.439 72.0428C254.874 72.0435 274.144 75.5825 293.248 82.6598C312.242 89.5457 329.579 99.3005 345.261 111.924C360.942 124.548 373.421 138.892 382.697 154.958C391.311 169.877 395.121 182.978 394.128 194.262C393.355 205.546 389.656 215.396 383.031 223.811C376.627 232.226 366.688 242.554 353.217 254.794L435.375 254.797L464.198 304.716L275.367 304.709L246.544 254.79Z"
-                                fill="#4B0600"
-                            />
-                            <path
-                                d="M246.544 254.79L246.875 254.79C253.722 247.905 264.046 238.82 277.849 227.537C291.21 216.253 301.259 207.264 307.995 200.57C314.62 193.685 319.147 186.418 321.577 178.768C324.006 171.117 322.846 163.18 318.097 154.956C312.796 145.775 305.342 138.412 295.735 132.865C286.238 127.127 276.189 124.258 265.588 124.257C255.208 124.257 248.416 127.03 245.214 132.576C241.902 137.931 243.006 145.39 248.528 154.953L183.928 154.951C174.652 138.885 170.676 124.541 172 111.918C173.546 99.2946 179.84 89.5408 190.882 82.6559C202.035 75.5798 216.887 72.0421 235.439 72.0428C254.874 72.0435 274.144 75.5825 293.248 82.6598C312.242 89.5457 329.579 99.3005 345.261 111.924C360.942 124.548 373.421 138.892 382.697 154.958C391.311 169.877 395.121 182.978 394.128 194.262C393.355 205.546 389.656 215.396 383.031 223.811C376.627 232.226 366.688 242.554 353.217 254.794L435.375 254.797L464.198 304.716L275.367 304.709L246.544 254.79Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                                stroke-linejoin="round"
-                            />
-                        </g>
-                        <g
-                            class="translate-y-0 opacity-100 transition-all delay-300 duration-750 starting:translate-y-4 starting:opacity-0"
-                            :style="{ mixBlendMode: 'hard-light' }"
-                        >
-                            <path
-                                d="M67.41 125.402L44.5515 125.401L15.5625 75.1953L101.364 75.1985L233.886 304.712L170.942 304.71L67.41 125.402Z"
-                                fill="#4B0600"
-                            />
-                            <path
-                                d="M67.41 125.402L44.5515 125.401L15.5625 75.1953L101.364 75.1985L233.886 304.712L170.942 304.71L67.41 125.402Z"
-                                stroke="#FF750F"
-                                stroke-width="1"
-                            />
-                        </g>
-                    </svg>
-                    <div
-                        class="absolute inset-0 rounded-t-lg shadow-[inset_0px_0px_0px_1px_rgba(26,26,0,0.16)] lg:overflow-hidden lg:rounded-t-none lg:rounded-r-lg dark:shadow-[inset_0px_0px_0px_1px_#fffaed2d]"
-                    />
+                <div class="it-features-grid">
+                    <div class="it-feature-card">
+                        <div class="it-feature-icon it-icon-purple">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                            </svg>
+                        </div>
+                        <h3>Admin Dashboard</h3>
+                        <p>Full platform oversight — manage users, monitor activity, and moderate stores with ease.</p>
+                    </div>
+                    <div class="it-feature-card">
+                        <div class="it-feature-icon it-icon-emerald">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                        </div>
+                        <h3>Vendor Tools</h3>
+                        <p>Inventory management, expense tracking, stock alerts, and full sales analytics in one place.</p>
+                    </div>
+                    <div class="it-feature-card">
+                        <div class="it-feature-icon it-icon-gold">
+                            <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3>Customer Experience</h3>
+                        <p>Search nearby stores, compare live prices across shops, and pre-order your essentials.</p>
+                    </div>
                 </div>
-            </main>
-        </div>
-        <div class="hidden h-14.5 lg:block"></div>
+            </div>
+        </section>
+
+        <!-- ── HOW IT WORKS ─────────────────────────────── -->
+        <section id="how-it-works" class="it-how">
+            <div class="it-container">
+                <div class="it-section-header it-center">
+                    <div class="it-section-label">Simple Process</div>
+                    <h2 class="it-section-title">How iTinda Works</h2>
+                    <p class="it-section-sub">Three easy steps to start buying or selling locally.</p>
+                </div>
+                <div class="it-steps-grid">
+                    <div class="it-step">
+                        <div class="it-step-num">1</div>
+                        <h3>Sign Up</h3>
+                        <p>Create your account as a vendor or customer in minutes — no complicated setup required.</p>
+                    </div>
+                    <div class="it-step">
+                        <div class="it-step-num">2</div>
+                        <h3>Connect</h3>
+                        <p>Vendors set up their store and inventory. Customers discover nearby shops in their area.</p>
+                    </div>
+                    <div class="it-step">
+                        <div class="it-step-num">3</div>
+                        <h3>Grow</h3>
+                        <p>Start selling, pre-ordering, and building a stronger local commerce community.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── ROLE CARDS ───────────────────────────────── -->
+        <section id="vendors" class="it-roles">
+            <div class="it-container">
+                <div class="it-section-header it-center">
+                    <div class="it-section-label">Role-Based Access</div>
+                    <h2 class="it-section-title">Built for Vendors &amp; Customers</h2>
+                    <p class="it-section-sub">Each role gets exactly the tools they need — nothing more, nothing less.</p>
+                </div>
+                <div class="it-roles-grid">
+                    <div id="vendors-detail" class="it-role-card it-role-vendor">
+                        <h3>For Vendors</h3>
+                        <p class="it-role-subtitle">Two access levels tailored for your team structure.</p>
+                        <div class="it-role-row">
+                            <span class="it-role-tag it-tag-owner">Owner</span>
+                            <div class="it-role-text">
+                                <strong>Full Access</strong>
+                                View total profits, expenses, and overall store performance with complete analytics.
+                            </div>
+                        </div>
+                        <div class="it-role-row">
+                            <span class="it-role-tag it-tag-staff">Staff</span>
+                            <div class="it-role-text">
+                                <strong>Operational Access</strong>
+                                Manage stock levels, handle orders, and view day-to-day operational reports.
+                            </div>
+                        </div>
+                    </div>
+                    <div id="customers" class="it-role-card it-role-customer">
+                        <h3>For Customers</h3>
+                        <p class="it-role-subtitle it-muted">Find the best deals at stores near you.</p>
+                        <ul class="it-check-list">
+                            <li>
+                                <div class="it-check-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                Search stores within your area
+                            </li>
+                            <li>
+                                <div class="it-check-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                View and compare product prices across different shops
+                            </li>
+                            <li>
+                                <div class="it-check-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                Pre-order products from your selected vendors
+                            </li>
+                            <li>
+                                <div class="it-check-icon">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                </div>
+                                Transparent, real-time pricing — no surprises
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── CTA ─────────────────────────────────────── -->
+        <section class="it-cta">
+            <div class="it-container">
+                <div class="it-cta-inner">
+                    <h2>Ready to <span class="it-accent-gold">Transform</span><br />Local Commerce?</h2>
+                    <p>Join the platform that's connecting communities and empowering local businesses to thrive.</p>
+                    <div class="it-cta-btns">
+                        <Link href="/register/vendor" class="it-btn-cta-gold">Become a Vendor</Link>
+                        <Link href="/register/customer" class="it-btn-cta-outline">Start Shopping</Link>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── FOOTER ──────────────────────────────────── -->
+        <footer class="it-footer">
+            <div class="it-container">
+                <div class="it-footer-grid">
+                    <div>
+                        <div class="it-footer-brand">iTinda</div>
+                        <p class="it-footer-desc">Connecting local vendors with customers in your community — one neighborhood at a time.</p>
+                    </div>
+                    <div class="it-footer-col">
+                        <div class="it-footer-col-title">For Vendors</div>
+                        <ul>
+                            <li><a href="#">Pricing</a></li>
+                            <li><a href="#">Features</a></li>
+                            <li><a href="#">Success Stories</a></li>
+                        </ul>
+                    </div>
+                    <div class="it-footer-col">
+                        <div class="it-footer-col-title">For Customers</div>
+                        <ul>
+                            <li><a href="#">Find Stores</a></li>
+                            <li><a href="#">How It Works</a></li>
+                            <li><a href="#">FAQs</a></li>
+                        </ul>
+                    </div>
+                    <div class="it-footer-col">
+                        <div class="it-footer-col-title">Company</div>
+                        <ul>
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="it-footer-bottom">
+                    <p class="it-footer-copy">&copy; {{ new Date().getFullYear() }} <span>iTinda</span>. All rights reserved.</p>
+                    <p class="it-footer-copy">Made for local communities.</p>
+                </div>
+            </div>
+        </footer>
+
     </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+import { Link } from '@inertiajs/vue3';
+
+const menuOpen = ref(false);
+</script>
+
+<style scoped>
+/* ── Google Fonts ──────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Lato:wght@300;400;700&display=swap');
+
+/* ── CSS Variables ─────────────────────────────────────────── */
+.it-root {
+    --emerald:     #1B4D3E;
+    --emerald-mid: #245c4a;
+    --gold:        #C5A059;
+    --gold-light:  #d9b87a;
+    --gold-pale:   #f5ead4;
+    --smoke:       #F5F5F5;
+    --white:       #ffffff;
+    --text-dark:   #0f2820;
+    --text-body:   #3a4a44;
+    --text-muted:  #7a8f88;
+    --border:      rgba(27, 77, 62, 0.12);
+
+    font-family: 'Lato', sans-serif;
+    color: var(--text-dark);
+    background: var(--smoke);
+    overflow-x: hidden;
+}
+
+.it-root h1,
+.it-root h2,
+.it-root h3,
+.it-root h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    margin: 0;
+}
+
+.it-root a  { text-decoration: none; color: inherit; }
+.it-root ul { list-style: none; margin: 0; padding: 0; }
+.it-root p  { margin: 0; }
+
+/* ── Container ─────────────────────────────────────────────── */
+.it-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 48px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   NAVBAR
+   ════════════════════════════════════════════════════════════ */
+.it-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    background: var(--emerald);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.14);
+}
+
+.it-nav-inner {
+    display: flex;
+    align-items: center;
+    height: 72px;
+    gap: 0;
+}
+
+/* Logo — flush left */
+.it-nav-logo {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    margin-right: 40px;
+}
+
+.it-nav-logo-icon {
+    width: 34px; height: 34px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.it-nav-logo-icon svg {
+    width: 18px; height: 18px;
+    color: var(--emerald);
+}
+
+/* Nav links — spread evenly in the middle */
+.it-nav-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+}
+
+.it-nav-links li a {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+    white-space: nowrap;
+    display: block;
+}
+
+.it-nav-links li a:hover {
+    color: var(--gold);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Actions — flush right */
+.it-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    margin-left: 24px;
+}
+
+.it-btn-ghost-nav {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.82);
+    padding: 9px 20px;
+    border-radius: 7px;
+    white-space: nowrap;
+    transition: color 0.2s, background 0.2s;
+}
+
+.it-btn-ghost-nav:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.it-btn-gold-nav {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    background: var(--gold);
+    color: var(--emerald);
+    padding: 10px 22px;
+    border-radius: 7px;
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.it-btn-gold-nav:hover {
+    background: var(--gold-light);
+    transform: translateY(-1px);
+}
+
+/* Hamburger — hidden on desktop */
+.it-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px; height: 40px;
+    padding: 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.it-ham-line {
+    display: block;
+    width: 100%; height: 2px;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 2px;
+    transition: transform 0.25s, opacity 0.2s;
+    transform-origin: center;
+}
+
+.it-ham-open-1 { transform: translateY(7px) rotate(45deg); }
+.it-ham-open-2 { opacity: 0; transform: scaleX(0); }
+.it-ham-open-3 { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile dropdown */
+.it-mobile-menu {
+    background: var(--emerald-mid);
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.35s ease;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.it-mobile-menu-open {
+    max-height: 420px;
+}
+
+.it-mobile-links {
+    padding: 8px 24px 4px;
+}
+
+.it-mobile-links li a {
+    display: block;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.88rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+    padding: 13px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    transition: color 0.2s;
+}
+
+.it-mobile-links li:last-child a { border-bottom: none; }
+.it-mobile-links li a:hover { color: var(--gold); }
+
+.it-mobile-actions {
+    display: flex;
+    gap: 12px;
+    padding: 16px 24px 20px;
+}
+
+.it-mobile-login {
+    flex: 1;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.82);
+    padding: 11px 0;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 7px;
+    transition: border-color 0.2s, background 0.2s;
+}
+
+.it-mobile-login:hover {
+    border-color: rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.it-mobile-register {
+    flex: 1;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    background: var(--gold);
+    color: var(--emerald);
+    padding: 11px 0;
+    border-radius: 7px;
+    transition: background 0.2s;
+}
+
+.it-mobile-register:hover { background: var(--gold-light); }
+
+/* ════════════════════════════════════════════════════════════
+   HERO  — light background, NOT emerald
+   ════════════════════════════════════════════════════════════ */
+.it-hero {
+    padding-top: 72px;
+    background: var(--smoke);
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+}
+
+/* Barely-there warm gradient accent on the right half */
+.it-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+        radial-gradient(ellipse 65% 75% at 90% 45%, rgba(197, 160, 89, 0.07) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 50% at 5%  90%, rgba(27, 77, 62, 0.04) 0%, transparent 55%);
+    pointer-events: none;
+}
+
+.it-hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 72px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 72px 0 80px;
+}
+
+/* Hero badge */
+.it-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(27, 77, 62, 0.07);
+    border: 1px solid rgba(27, 77, 62, 0.16);
+    color: var(--emerald);
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 7px 14px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+    animation: itFadeUp 0.6s ease both;
+}
+
+.it-hero-badge-dot {
+    width: 6px; height: 6px;
+    background: var(--emerald);
+    border-radius: 50%;
+    animation: itPulse 2s infinite;
+}
+
+/* Hero heading */
+.it-hero-h1 {
+    font-size: clamp(2.1rem, 3.6vw, 3.2rem);
+    line-height: 1.13;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    animation: itFadeUp 0.6s 0.1s ease both;
+}
+
+.it-accent { color: var(--emerald); }
+
+.it-hero-desc {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: var(--text-muted);
+    max-width: 460px;
+    margin-bottom: 36px;
+    animation: itFadeUp 0.6s 0.2s ease both;
+}
+
+/* CTA buttons */
+.it-hero-cta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    animation: itFadeUp 0.6s 0.3s ease both;
+}
+
+.it-btn-primary {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    background: var(--emerald-mid);
+    color: #ffffff !important;
+    padding: 14px 30px;
+    border-radius: 8px;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 18px rgba(9, 99, 37, 0.356);
+}
+
+.it-btn-primary:hover {
+    background: var(--emerald);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(27, 77, 62, 0.32);
+}
+
+.it-btn-outline {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    background: transparent;
+    color: var(--emerald);
+    padding: 14px 30px;
+    border-radius: 8px;
+    border: 2px solid rgba(27, 77, 62, 0.28);
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.it-btn-outline:hover {
+    border-color: var(--emerald);
+    background: rgba(27, 77, 62, 0.05);
+    transform: translateY(-2px);
+}
+
+/* Stats */
+.it-hero-stats {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+    margin-top: 44px;
+    animation: itFadeUp 0.6s 0.4s ease both;
+}
+
+.it-stat-divider {
+    width: 1px; height: 36px;
+    background: rgba(27, 77, 62, 0.14);
+    flex-shrink: 0;
+}
+
+.it-stat-num {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--emerald);
+}
+
+.it-stat-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+/* ── Hero Visual ───────────────────────────────────────────── */
+.it-hero-visual {
+    position: relative;
+    animation: itFadeUp 0.6s 0.2s ease both;
+}
+
+/* Inventory card — soft emerald wash, reduced opacity */
+.it-hero-card {
+    background: rgba(27, 77, 62, 0.055);
+    border: 1px solid rgba(27, 77, 62, 0.16);
+    border-radius: 16px;
+    padding: 28px 32px;
+    position: relative;
+    z-index: 1;
+}
+
+.it-hero-card-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--emerald);
+    opacity: 0.65;
+    margin-bottom: 18px;
+}
+
+.it-hero-card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(27, 77, 62, 0.07);
+    gap: 12px;
+}
+
+.it-hero-card-row:last-child { border-bottom: none; }
+
+.it-card-item {
+    color: var(--text-body);
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+.it-card-price {
+    color: var(--emerald);
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+}
+
+.it-card-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-family: 'Lato', sans-serif;
+    white-space: nowrap;
+}
+
+.it-badge-in  { background: rgba(27, 77, 62, 0.1);  color: var(--emerald); }
+.it-badge-low { background: rgba(197, 160, 89, 0.16); color: #8a6520; }
+
+/* Floating tags */
+.it-floating-tag {
+    position: absolute;
+    background: var(--white);
+    border: 1px solid rgba(27, 77, 62, 0.13);
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    z-index: 2;
+}
+
+.it-tag-order  { top: -18px;  right: -16px; animation: itFloat 3s ease-in-out infinite; }
+.it-tag-vendor { bottom: -16px; left: -16px; animation: itFloat 3s 1.5s ease-in-out infinite; }
+
+.it-tag-icon {
+    width: 28px; height: 28px;
+    background: var(--emerald);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+
+.it-tag-icon svg { width: 14px; height: 14px; color: #fff; }
+
+.it-tag-label {
+    font-size: 0.63rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.it-tag-val {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+/* ════════════════════════════════════════════════════════════
+   FEATURES
+   ════════════════════════════════════════════════════════════ */
+.it-features {
+    background: var(--white);
+    padding: 96px 0;
+}
+
+.it-section-label {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+
+.it-section-title {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    color: var(--text-dark);
+    line-height: 1.2;
+    margin-bottom: 14px;
+}
+
+.it-section-sub {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 480px;
+}
+
+.it-section-header { margin-bottom: 52px; }
+.it-center         { text-align: center; }
+.it-center .it-section-sub { margin: 0 auto; }
+
+.it-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.it-feature-card {
+    background: var(--smoke);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    position: relative;
+    overflow: hidden;
+}
+
+.it-feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+}
+
+.it-feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px rgba(27, 77, 62, 0.09);
+    border-color: rgba(197, 160, 89, 0.3);
+}
+
+.it-feature-card:hover::before { transform: scaleX(1); }
+
+.it-feature-icon {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+}
+
+.it-icon-purple { background: #ede9fe; }
+.it-icon-purple svg { color: #7c3aed; }
+.it-icon-emerald { background: rgba(27, 77, 62, 0.1); }
+.it-icon-emerald svg { color: var(--emerald); }
+.it-icon-gold { background: var(--gold-pale); }
+.it-icon-gold svg { color: var(--gold); }
+
+.it-feature-card h3 {
+    font-size: 1.08rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+}
+
+.it-feature-card p {
+    color: var(--text-muted);
+    font-size: 0.91rem;
+    line-height: 1.65;
+}
+
+/* ════════════════════════════════════════════════════════════
+   HOW IT WORKS
+   ════════════════════════════════════════════════════════════ */
+.it-how {
+    background: var(--smoke);
+    padding: 96px 0;
+}
+
+.it-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    position: relative;
+}
+
+.it-steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 26px;
+    left: calc(16.6% + 28px);
+    right: calc(16.6% + 28px);
+    height: 2px;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--gold) 0, var(--gold) 8px,
+        transparent 8px, transparent 16px
+    );
+}
+
+.it-step { text-align: center; padding: 0 32px; }
+
+.it-step-num {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: var(--emerald);
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    border: 3px solid var(--gold-pale);
+    box-shadow: 0 0 0 6px rgba(27, 77, 62, 0.07);
+    position: relative; z-index: 1;
+}
+
+.it-step h3 { font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; }
+.it-step p  { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+
+/* ════════════════════════════════════════════════════════════
+   ROLE CARDS
+   ════════════════════════════════════════════════════════════ */
+.it-roles {
+    background: var(--white);
+    padding: 96px 0;
+}
+
+.it-roles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+}
+
+.it-role-card {
+    border-radius: 18px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.it-role-card::after {
+    content: '';
+    position: absolute;
+    bottom: -40px; right: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    pointer-events: none;
+}
+
+.it-role-vendor   { background: var(--emerald); color: var(--white); }
+.it-role-customer { background: var(--smoke); border: 1px solid var(--border); }
+
+.it-role-card h3 { font-size: 1.4rem; margin-bottom: 6px; }
+.it-role-vendor h3   { color: var(--gold); }
+.it-role-customer h3 { color: var(--emerald); }
+
+.it-role-subtitle { font-size: 0.88rem; font-weight: 400; margin-bottom: 28px; margin-top: 4px; }
+.it-role-vendor .it-role-subtitle { color: rgba(255, 255, 255, 0.58); }
+.it-muted { color: var(--text-muted); }
+
+.it-role-row {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.it-role-tag {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 100px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.it-tag-owner { background: var(--gold); color: var(--emerald); }
+.it-tag-staff { background: rgba(255,255,255,0.14); color: #fff; border: 1px solid rgba(255,255,255,0.24); }
+
+.it-role-text { font-size: 0.88rem; line-height: 1.55; color: rgba(255,255,255,0.76); }
+.it-role-text strong { display: block; font-weight: 700; color: #fff; margin-bottom: 2px; }
+
+.it-check-list li {
+    display: flex; align-items: flex-start;
+    gap: 12px; margin-bottom: 16px;
+    font-size: 0.91rem; color: var(--text-body);
+}
+
+.it-check-list li:last-child { margin-bottom: 0; }
+
+.it-check-icon {
+    width: 20px; height: 20px;
+    background: rgba(27, 77, 62, 0.1);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+}
+
+.it-check-icon svg { width: 10px; height: 10px; color: var(--emerald); }
+
+/* ════════════════════════════════════════════════════════════
+   CTA
+   ════════════════════════════════════════════════════════════ */
+.it-cta {
+    background: var(--emerald);
+    padding: 96px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.it-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+        radial-gradient(ellipse 60% 60% at 100% 0%,   rgba(197,160,89,0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 0%   100%, rgba(197,160,89,0.08) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.it-cta-inner {
+    position: relative; z-index: 2;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.it-cta h2 {
+    font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+    color: var(--white);
+    margin-bottom: 16px;
+}
+
+.it-accent-gold { color: var(--gold); }
+
+.it-cta p {
+    font-size: 1.02rem;
+    color: rgba(255,255,255,0.68);
+    line-height: 1.7;
+    margin-bottom: 36px;
+}
+
+.it-cta-btns {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.it-btn-cta-gold {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 0.95rem;
+    background: var(--gold); color: var(--emerald);
+    padding: 14px 34px; border-radius: 8px;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 18px rgba(197,160,89,0.3);
+}
+
+.it-btn-cta-gold:hover { background: var(--gold-light); transform: translateY(-2px); }
+
+.it-btn-cta-outline {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 0.95rem;
+    background: transparent; color: var(--white);
+    padding: 14px 34px; border-radius: 8px;
+    border: 2px solid rgba(255,255,255,0.32);
+    transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.it-btn-cta-outline:hover {
+    border-color: rgba(255,255,255,0.68);
+    background: rgba(255,255,255,0.07);
+    transform: translateY(-2px);
+}
+
+/* ════════════════════════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════════════════════════ */
+.it-footer {
+    background: var(--text-dark);
+    color: var(--white);
+    padding: 64px 0 28px;
+}
+
+.it-footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 44px;
+}
+
+.it-footer-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900; font-size: 1.35rem;
+    color: var(--gold); margin-bottom: 12px;
+}
+
+.it-footer-desc {
+    font-size: 0.87rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.65;
+    max-width: 230px;
+}
+
+.it-footer-col-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 0.74rem;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+}
+
+.it-footer-col ul li { margin-bottom: 10px; }
+
+.it-footer-col ul li a {
+    font-size: 0.87rem;
+    color: rgba(255,255,255,0.45);
+    transition: color 0.2s;
+}
+
+.it-footer-col ul li a:hover { color: var(--white); }
+
+.it-footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.it-footer-copy { font-size: 0.82rem; color: rgba(255,255,255,0.27); }
+.it-footer-copy span { color: var(--gold); }
+
+/* ════════════════════════════════════════════════════════════
+   KEYFRAMES
+   ════════════════════════════════════════════════════════════ */
+@keyframes itFadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes itPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.4; transform: scale(0.75); }
+}
+
+@keyframes itFloat {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-8px); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE — tablet ≤ 1024px
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+    .it-container { padding: 0 32px; }
+
+    .it-nav-links li a  { font-size: 0.78rem; padding: 7px 10px; }
+    .it-nav-logo        { margin-right: 24px; }
+    .it-nav-actions     { margin-left: 16px; gap: 8px; }
+    .it-btn-ghost-nav   { padding: 8px 14px; }
+    .it-btn-gold-nav    { padding: 9px 16px; }
+
+    .it-hero-inner    { gap: 48px; }
+    .it-features-grid { gap: 18px; }
+
+    .it-footer-grid { grid-template-columns: 2fr 1fr 1fr; }
+    .it-footer-grid > div:last-child { grid-column: 2; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE — mobile ≤ 768px
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    .it-container { padding: 0 20px; }
+
+    /* Navbar */
+    .it-nav-links   { display: none; }
+    .it-nav-actions { display: none; }
+    .it-hamburger   { display: flex; }
+    .it-nav-inner   { height: 64px; }
+    .it-nav-logo    { margin-right: 0; }
+
+    /* Hero */
+    .it-hero-inner {
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding: 52px 0 60px;
+    }
+    .it-hero-visual { display: none; }
+    .it-hero-desc   { max-width: 100%; }
+    .it-hero-stats  { gap: 20px; }
+
+    /* Sections */
+    .it-features-grid { grid-template-columns: 1fr; gap: 16px; }
+    .it-steps-grid    { grid-template-columns: 1fr; gap: 40px; }
+    .it-steps-grid::before { display: none; }
+    .it-roles-grid    { grid-template-columns: 1fr; }
+
+    /* Footer */
+    .it-footer-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+    .it-footer-grid > div:last-child { grid-column: unset; }
+    .it-footer-bottom { flex-direction: column; text-align: center; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE — small mobile ≤ 480px
+   ════════════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .it-hero-h1  { font-size: 1.95rem; }
+    .it-hero-cta { flex-direction: column; }
+    .it-btn-primary,
+    .it-btn-outline { width: 100%; text-align: center; }
+
+    .it-hero-stats  { flex-wrap: wrap; gap: 16px; }
+    .it-stat-divider { display: none; }
+
+    .it-footer-grid { grid-template-columns: 1fr; }
+
+    .it-cta-btns { flex-direction: column; }
+    .it-btn-cta-gold,
+    .it-btn-cta-outline { width: 100%; text-align: center; }
+}
+</style>
