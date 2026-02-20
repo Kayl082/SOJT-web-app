@@ -23,7 +23,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
         'phone',
     ];
 
@@ -55,11 +54,6 @@ class User extends Authenticatable
 
     protected static function booted(): void
     {
-        static::created(function ($user) {
-            // Assign default role after user is created
-            if (! $user->roles()->exists()) {
-                $user->assignRole($user->role ?? 'customer');
-            }
-        });
+        
     }
 }
