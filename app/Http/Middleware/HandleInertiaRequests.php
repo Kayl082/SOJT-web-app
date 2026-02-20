@@ -35,11 +35,20 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+        $hasStore = false;
+
+        // Check if vendor has a store
+        if ($user && $user->role === 'vendor') {
+            $hasStore = \App\Models\Shop::where('owner_id', $user->id)->exists();
+        }
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $user,
+                'hasStore' => $hasStore,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
