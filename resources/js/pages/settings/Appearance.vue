@@ -1,22 +1,41 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import AppearanceTabs from '@/components/AppearanceTabs.vue';
 import Heading from '@/components/Heading.vue';
-import AppLayout from '@/layouts/AppLayout.vue';
+import VendorLayout from '@/layouts/VendorLayout.vue';
+import CustomerLayout from '@/layouts/CustomerLayout.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { edit } from '@/routes/appearance';
-import { type BreadcrumbItem } from '@/types';
 
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: 'Appearance settings',
-        href: edit().url,
-    },
-];
+const page = usePage();
+const user = page.props.auth.user;
+const userRole = computed(() => {
+    // Try direct role property first
+    if (user?.role) {
+        return user.role;
+    }
+    // Fallback to roles array
+    if (user?.roles && user.roles.length > 0) {
+        return user.roles[0].name;
+    }
+    return 'customer';
+});
+
+const LayoutComponent = computed(() => {
+    switch (userRole.value) {
+        case 'admin':
+            return AdminLayout;
+        case 'vendor':
+            return VendorLayout;
+        default:
+            return CustomerLayout;
+    }
+});
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
+    <component :is="LayoutComponent">
         <Head title="Appearance settings" />
 
         <h1 class="sr-only">Appearance Settings</h1>
@@ -31,5 +50,5 @@ const breadcrumbItems: BreadcrumbItem[] = [
                 <AppearanceTabs />
             </div>
         </SettingsLayout>
-    </AppLayout>
+    </component>
 </template>

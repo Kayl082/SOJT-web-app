@@ -4,6 +4,13 @@
     background: #F5F5F5;
 }
 
+/* Prevent black background on overscroll */
+html,
+body {
+    background: #F5F5F5;
+    overscroll-behavior: none;
+}
+
 .dashboard-content {
     margin-left: 250px;
     margin-top: 64px;
