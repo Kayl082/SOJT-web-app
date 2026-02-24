@@ -13,12 +13,28 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            /*
+            |--------------------------------------------------------------------------
+            | Multi-Tenant Link
+            |--------------------------------------------------------------------------
+            | NULL  = Admin or Customer
+            | NOT NULL = Vendor Owner or Vendor Staff
+            */
+            $table->foreignId('store_id')
+                ->nullable()
+                ->constrained('stores')
+                ->nullOnDelete();
+
             $table->rememberToken();
             $table->timestamps();
+
+            $table->index('store_id');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -42,8 +58,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
+        // Drop dependent tables first
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };

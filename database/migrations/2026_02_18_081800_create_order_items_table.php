@@ -13,15 +13,16 @@ return new class extends Migration {
                 ->constrained('orders')
                 ->cascadeOnDelete();
 
-            $table->foreignId('inventory_id')
-                ->constrained('inventory')
+            $table->foreignId('product_id')
+                ->constrained('products')
                 ->restrictOnDelete();
 
             $table->unsignedInteger('quantity');
+            $table->decimal('price', 10, 2);
 
             $table->timestamps();
 
-            $table->unique(['order_id', 'inventory_id']);
+            $table->index(['order_id', 'product_id']);
         });
     }
 

@@ -18,8 +18,16 @@ return new class extends Migration {
                 ->restrictOnDelete();
 
             $table->string('order_number', 50)->unique();
-            $table->enum('status', ['pending', 'confirmed', 'preparing', 'ready', 'completed', 'cancelled'])
-                ->default('pending');
+
+            $table->enum('status', [
+                'pending',
+                'confirmed',
+                'preparing',
+                'ready',
+                'completed',
+                'cancelled'
+            ])->default('pending');
+
             $table->decimal('total_amount', 10, 2);
 
             $table->boolean('is_paid')->default(false);
@@ -30,8 +38,8 @@ return new class extends Migration {
 
             $table->timestamps();
 
-            $table->index(['store_id', 'status', 'created_at']);
-            $table->index(['customer_id', 'created_at']);
+            $table->index(['store_id', 'status']);
+            $table->index(['customer_id']);
         });
     }
 
