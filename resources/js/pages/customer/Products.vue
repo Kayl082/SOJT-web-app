@@ -38,6 +38,11 @@ const products = ref([
     rating: 4.5,
     is_available: true,
     is_active: true,
+    store: {
+      id: 1,
+      name: 'Emerald Fresh Market',
+      logo: 'https://ui-avatars.com/api/?name=Emerald+Fresh&background=245c4a&color=fff'
+    }
   },
   {
     id: 2,
@@ -49,8 +54,13 @@ const products = ref([
     stock_level: 3,
     sold_count: 45,
     rating: 4.2,
-    is_available: true,
+    is_available: false,
     is_active: true,
+    store: {
+      id: 2,
+      name: 'Golden Harvest Grocery',
+      logo: 'https://ui-avatars.com/api/?name=Golden+Harvest&background=245c4a&color=fff'
+    }
   },
 ])
 
@@ -211,8 +221,23 @@ const filteredProducts = computed(() => {
 
                 </div>
 
+
                 <!-- Content -->
                 <CardContent class="space-y-2">
+
+                    <!-- Store Info -->
+                    <Link
+                        :href="`/customer/stores/${product.store.id}`"
+                        class="flex items-center gap-2 text-xs text-muted-foreground hover:text-[#245c4a] transition"
+                    >
+                        <img
+                        :src="product.store.logo"
+                        class="h-5 w-5 rounded-full object-cover"
+                        />
+                        <span class="line-clamp-1">
+                        {{ product.store.name }}
+                        </span>
+                    </Link>
 
                     <!-- Product Name -->
                     <h3 class="text-sm font-medium text-foreground line-clamp-2 min-h-[40px]">
