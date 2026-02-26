@@ -268,25 +268,6 @@ const setStoreSelected = (storeId: number, val: boolean) => {
   )
 }
 
-/** Selected Grouped By Store */
-const selectedGroupedByStore = computed(() => {
-  const groups = new Map<number, { store: StoreInfo; items: CartItem[] }>()
-
-  for (const item of cartItems.value.filter(i => i.selected)) {
-    const key = item.store.id
-
-    if (!groups.has(key)) {
-      groups.set(key, { store: item.store, items: [] })
-    }
-
-    groups.get(key)!.items.push(item)
-  }
-
-  return Array.from(groups.values()).sort((a, b) =>
-    a.store.name.localeCompare(b.store.name)
-  )
-})
-
 /** Store subtotal (selected only) */
 const storeSubtotal = (storeId: number) => {
   return cartItems.value
@@ -639,118 +620,23 @@ const adjustQty = (id: number, delta: number) => {
                 </Button>
               </DialogTrigger>
 
-              <DialogContent class="sm:max-w-3xl mt-8 z-[1000]">
+              <DialogContent class="sm:max-w-lg">
                 <DialogHeader>
-                  <DialogTitle>Pre-Order Summary</DialogTitle>
+                  <DialogTitle>Pre-Order</DialogTitle>
                   <DialogDescription>
-                    Review your selected items grouped by shop. You can’t modify items here.
+                    This modal is intentionally blank for now. Later, you can add pickup date,
+                    payment option, and confirmation steps here.
                   </DialogDescription>
                 </DialogHeader>
 
-                <div class="max-h-[60vh] overflow-auto pr-1">
-                  <div
-                    v-if="selectedGroupedByStore.length === 0"
-                    class="rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground"
-                  >
-                    No items selected.
-                  </div>
-
-                  <div v-else class="space-y-4">
-                    <Card
-                      v-for="group in selectedGroupedByStore"
-                      :key="group.store.id"
-                      class="rounded-xl shadow-sm"
-                    >
-                      <CardHeader class="space-y-2">
-                        <div class="flex items-start justify-between gap-4">
-                          <div class="flex items-start gap-3">
-                            <div class="h-10 w-10 overflow-hidden rounded-lg border border-border bg-muted">
-                              <img
-                                v-if="group.store.logo_url"
-                                :src="group.store.logo_url"
-                                :alt="group.store.name"
-                                class="h-full w-full object-cover"
-                                loading="lazy"
-                              />
-                            </div>
-
-                            <div class="space-y-1">
-                              <CardTitle class="text-base">{{ group.store.name }}</CardTitle>
-                              <p class="text-xs text-muted-foreground">
-                                {{ group.store.description }}
-                              </p>
-                            </div>
-                          </div>
-
-                          <div class="text-sm font-semibold text-[#245c4a]">
-                            Subtotal: {{ formatCurrency(storeSubtotal(group.store.id)) }}
-                          </div>
-                        </div>
-                      </CardHeader>
-
-                      <CardContent class="space-y-3">
-                        <div
-                          v-for="item in group.items"
-                          :key="item.id"
-                          class="flex items-start gap-3 rounded-lg border border-border p-3"
-                        >
-                          <div class="h-14 w-14 overflow-hidden rounded-lg bg-muted border border-border shrink-0">
-                            <img
-                              v-if="item.product.image_url"
-                              :src="item.product.image_url"
-                              :alt="item.product.name"
-                              class="h-full w-full object-cover"
-                              loading="lazy"
-                            />
-                          </div>
-
-                          <div class="min-w-0 flex-1 space-y-1">
-                            <p class="text-sm font-medium">{{ item.product.name }}</p>
-                            <p class="text-xs text-muted-foreground line-clamp-2">
-                              {{ item.product.description }}
-                            </p>
-
-                            <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                              <span>
-                                Price:
-                                <span class="font-medium text-foreground">
-                                  {{ formatCurrency(item.product.price) }}
-                                </span>
-                              </span>
-                              <span>
-                                Qty:
-                                <span class="font-medium text-foreground">{{ item.quantity }}</span>
-                              </span>
-                              <span>
-                                Subtotal:
-                                <span class="font-medium text-foreground">
-                                  {{ formatCurrency(item.product.price * item.quantity) }}
-                                </span>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                <div class="pt-2">
+                  <div class="rounded-lg border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
+                    Placeholder content
                   </div>
                 </div>
 
-                <div
-                  class="mt-4 flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <div class="text-sm">
-                    <span class="text-muted-foreground">Overall Total:</span>
-                    <span class="ml-2 font-semibold text-[#245c4a]">
-                      {{ formatCurrency(totalSelected) }}
-                    </span>
-                  </div>
-
-                  <div class="flex justify-end gap-2">
-                    <Button variant="outline" @click="preorderOpen = false">Cancel</Button>
-                    <Button class="bg-[#C5A059] text-black hover:bg-[#d9b87a]">
-                      Pre-Order
-                    </Button>
-                  </div>
+                <div class="flex justify-end gap-2 pt-4">
+                  <Button variant="outline" @click="preorderOpen = false">Close</Button>
                 </div>
               </DialogContent>
             </Dialog>
