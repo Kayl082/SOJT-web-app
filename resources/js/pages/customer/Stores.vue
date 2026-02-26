@@ -249,6 +249,16 @@ const filteredStores = computed(() => {
                 >
                     {{ store.isOpen ? 'Open Now' : 'Closed' }}
                 </div>
+                
+                <div class="flex justify-end pt-4">
+                    <Button
+                    size="sm"
+                    class="bg-[#245c4a] hover:bg-[#1B4D3E] text-white"
+                    @click="$inertia.visit(`/customer/stores/${store.id}`)"
+                    >
+                    Visit Store →
+                    </Button>
+                </div>
                 </CardContent>
             </Card>
             </div>
