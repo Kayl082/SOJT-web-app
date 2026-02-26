@@ -543,7 +543,7 @@ const removeSelected = () => {
                 </div>
 
                 <Link
-                    href="/customer/orders"
+                    href="/customer/cart"
                     class="block text-sm text-[#245c4a] hover:underline"
                 >
                     View all cart

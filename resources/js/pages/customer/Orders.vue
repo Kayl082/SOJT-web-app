@@ -493,7 +493,7 @@ const cancelOrder = (orderId: number) => {
             </button>
           </div>
 
-          <Link href="/customer/orders" class="shrink-0">
+          <Link href="/customer/cart">
             <Button class="gap-2 bg-[#245c4a] hover:bg-[#1B4D3E]">
               <ShoppingCart class="h-4 w-4" />
               View Cart

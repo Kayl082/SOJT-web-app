@@ -10,8 +10,10 @@ Route::middleware(['auth', 'verified', 'role:customer'])->prefix('customer')->na
     Route::get('/profile', fn() => inertia('customer/Profile'))->name('profile');
     
     Route::get('/stores/{id}', function ($id) {
-    return inertia('customer/StoreDetails', [
-        'storeId' => $id
-    ]);
-});
+        return inertia('customer/StoreDetails', [
+            'storeId' => $id,
+        ]);
+    })->name('stores.show');
+
+    Route::get('/cart', fn() => inertia('customer/Cart'))->name('cart');
 });
