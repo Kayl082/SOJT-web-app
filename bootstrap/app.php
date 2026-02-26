@@ -35,6 +35,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
 
             'vendor.store_access' => \App\Http\Middleware\EnsureVendorHasStoreAccess::class,
+
+             'store.tenant' => \App\Http\Middleware\ResolveStoreTenant::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

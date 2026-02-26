@@ -24,6 +24,8 @@ class Store extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
     ];
 
     /*
@@ -32,52 +34,62 @@ class Store extends Model
     |--------------------------------------------------------------------------
     */
 
-    // All vendor users belonging to this store
+    /**
+     * All users (vendor owner + staff) assigned to this store.
+     */
     public function users()
     {
         return $this->hasMany(User::class, 'store_id');
     }
 
-    // Store owner (via Spatie role)
+    /**
+     * Store owner (Spatie role: vendor_owner).
+     */
     public function owner()
     {
         return $this->hasOne(User::class, 'store_id')
             ->role('vendor_owner');
     }
 
-    // Store staff
+    /**
+     * Store staff (Spatie role: vendor_staff).
+     */
     public function staff()
     {
         return $this->hasMany(User::class, 'store_id')
             ->role('vendor_staff');
     }
 
-    // Products in this store
-    public function products()
+    /**
+     * Inventory entries for this store.
+     * (Product is accessed through inventory → product)
+     */
+    public function inventory()
     {
-        return $this->hasMany(Product::class, 'store_id');
+        return $this->hasMany(Inventory::class, 'store_id');
     }
 
-    // Orders for this store
+    /**
+     * Orders belonging to this store.
+     */
     public function orders()
     {
         return $this->hasMany(Order::class, 'store_id');
     }
 
-    // Expenses for this store
+    /**
+     * Expenses belonging to this store.
+     */
     public function expenses()
     {
         return $this->hasMany(Expense::class, 'store_id');
     }
 
-    // Reviews for this store
+    /**
+     * Reviews for this store (store + product scoped).
+     */
     public function reviews()
     {
         return $this->hasMany(Review::class, 'store_id');
-    }
-
-    public function inventory()
-    {
-        return $this->hasMany(Inventory::class, 'store_id');
     }
 }

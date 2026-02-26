@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->unsignedInteger('reorder_level')->default(10);
             $table->boolean('is_available')->default(true);
 
+            $table->decimal('price', 10, 2);
+            
             $table->timestamps();
 
             $table->unique(['store_id', 'product_id']);

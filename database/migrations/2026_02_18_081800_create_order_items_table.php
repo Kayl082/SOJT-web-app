@@ -13,16 +13,21 @@ return new class extends Migration {
                 ->constrained('orders')
                 ->cascadeOnDelete();
 
-            $table->foreignId('product_id')
-                ->constrained('products')
+            //  Use inventory instead of product
+            $table->foreignId('inventory_id')
+                ->constrained('inventory')
                 ->restrictOnDelete();
 
             $table->unsignedInteger('quantity');
-            $table->decimal('price', 10, 2);
+
+            //  Freeze price at time of order
+            $table->decimal('unit_price', 10, 2);
+            $table->decimal('subtotal', 10, 2);
 
             $table->timestamps();
 
-            $table->index(['order_id', 'product_id']);
+            // Prevent duplicate same inventory in one order
+            $table->unique(['order_id', 'inventory_id']);
         });
     }
 

@@ -4,25 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\BelongsToStore;
 
 class Product extends Model
 {
-    use HasFactory, BelongsToStore;
+    use HasFactory;
 
     protected $fillable = [
-        'store_id',
         'category_id',
         'product_name',
         'description',
         'barcode',
         'image_url',
-        'price',
         'is_active',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
         'is_active' => 'boolean',
     ];
 
@@ -32,19 +28,14 @@ class Product extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function store()
-    {
-        return $this->belongsTo(Store::class, 'store_id');
-    }
-
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function inventory()
+    public function inventories()
     {
-        return $this->hasOne(Inventory::class);
+        return $this->hasMany(Inventory::class);
     }
 
     public function orderItems()

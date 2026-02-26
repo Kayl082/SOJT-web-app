@@ -13,6 +13,10 @@ return new class extends Migration {
                 ->constrained('stores')
                 ->cascadeOnDelete();
 
+            $table->foreignId('product_id')
+                ->constrained('products')
+                ->cascadeOnDelete();
+
             $table->foreignId('customer_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
@@ -23,6 +27,10 @@ return new class extends Migration {
             $table->timestamps();
 
             $table->index(['store_id', 'rating']);
+            
+            $table->unique(['store_id', 'product_id', 'customer_id']);
+
+            $table->index(['store_id', 'product_id']);
         });
     }
 
