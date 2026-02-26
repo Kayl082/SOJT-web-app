@@ -86,7 +86,6 @@ class RolesSeeder extends Seeder
             'update_order_status',
             'manage_inventory',
             'update_stock',
-            'manage_products',
             'view_basic_analytics',
         ]);
 
