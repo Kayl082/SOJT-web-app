@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Link } from '@inertiajs/vue3'
 import { ArrowLeft } from 'lucide-vue-next'
-import { ChevronDown } from 'lucide-vue-next'
+import { ChevronDown, ShoppingCart } from 'lucide-vue-next'
 import { Input } from '@/components/ui/input'
 import {
   DropdownMenu,
@@ -405,21 +405,7 @@ const removeSelected = () => {
             >
             <div class="relative h-14 w-14 rounded-full bg-[#245c4a] hover:bg-[#1B4D3E] text-white flex items-center justify-center shadow-lg hover:shadow-xl transition">
                 
-                <!-- Icon -->
-                <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="h-6 w-6"
-                >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-                />
-                </svg>
+                <ShoppingCart class="h-5 w-5" />
 
                 <!-- Item Count Badge -->
                 <span
@@ -452,7 +438,7 @@ const removeSelected = () => {
                 <!-- Header -->
                 <div class="flex items-center justify-between p-4 border-b border-border">
                 <div class="flex items-center gap-2">
-                    <span class="text-lg">🛒</span>
+                    <ShoppingCart class="h-6 w-6 text-[#245c4a]" />
                     <h3 class="font-semibold text-[#245c4a]">Cart</h3>
                 </div>
                 <button @click="cartOpen = false">✕</button>
@@ -507,32 +493,39 @@ const removeSelected = () => {
 
                     </div>
 
-                    <div class="flex justify-between items-start">
+                    <div class="flex items-center justify-between pt-2">
+
+                        <!-- Remove -->
                         <button
-                        class="text-xs text-red-500 hover:underline"
-                        @click="cartItems = cartItems.filter(i => i.id !== item.id)"
+                            class="text-xs text-red-500 hover:underline"
+                            @click="cartItems = cartItems.filter(i => i.id !== item.id)"
                         >
-                        Remove
+                            Remove
                         </button>
-                    </div>
 
-                    <!-- Quantity -->
-                    <div class="flex justify-end items-center gap-2 text-sm">
-                    <button
-                        class="px-2 border rounded"
-                        @click="item.quantity > 1 && item.quantity--"
-                    >
-                        -
-                    </button>
+                        <!-- Quantity Controls -->
+                        <div class="flex items-center gap-2 text-sm">
 
-                    <span>{{ item.quantity }}</span>
+                            <button
+                            class="h-7 w-7 border rounded-md flex items-center justify-center hover:bg-muted transition"
+                            @click="item.quantity > 1 && item.quantity--"
+                            >
+                            -
+                            </button>
 
-                    <button
-                        class="px-2 border rounded"
-                        @click="item.quantity++"
-                    >
-                        +
-                    </button>
+                            <span class="min-w-[20px] text-center">
+                            {{ item.quantity }}
+                            </span>
+
+                            <button
+                            class="h-7 w-7 border rounded-md flex items-center justify-center hover:bg-muted transition"
+                            @click="item.quantity++"
+                            >
+                            +
+                            </button>
+
+                        </div>
+
                     </div>
 
                 </div>
