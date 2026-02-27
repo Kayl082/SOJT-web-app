@@ -8,4 +8,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/customers', fn() => inertia('admin/Customers'))->name('customers.index');
     Route::get('/categories', fn() => inertia('admin/Categories'))->name('categories');
     Route::get('/reports', fn() => inertia('admin/Reports'))->name('reports');
+
+    Route::get('/stores/{id}', function ($id) {
+        return inertia('admin/StoreDetails', [
+            'storeId' => $id,
+        ]);
+    })->name('stores.show');
 });

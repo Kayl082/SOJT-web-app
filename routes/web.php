@@ -21,6 +21,10 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
         return redirect()->route('vendor.dashboard');
     }
 
+    if ($user->hasRole('admin')) {
+        return redirect()->route('admin.dashboard');
+    }
+
     abort(403, 'No role assigned.');
 })->name('dashboard');
 

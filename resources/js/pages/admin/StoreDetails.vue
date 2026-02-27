@@ -3,10 +3,12 @@ import { Head } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import Header from '@/components/Header.vue';
 import Sidebar from '@/components/Sidebar.vue';
+import AdminNav from '@/components/navigation/AdminNav.vue';
+import AdminNavIcons from '@/components/navigation/AdminNavIcons.vue';
+import { useSidebar } from '@/composables/useSidebar';
 import CustomerNav from '@/components/navigation/CustomerNav.vue';
 import CustomerNavIcons from '@/components/navigation/CustomerNavIcons.vue';
 import PlaceholderPage from '@/components/PlaceholderPage.vue';
-import { useSidebar } from '@/composables/useSidebar';
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Link } from '@inertiajs/vue3'
@@ -25,7 +27,6 @@ const contentClass = computed(() => ({
     'dashboard-content': true,
     'sidebar-collapsed': isCollapsed.value
 }));
-
 
 const props = defineProps<{
   storeId: string
@@ -110,48 +111,6 @@ const filteredProducts = computed(() => {
 
   return result
 })
-
-
-//Mock cart items
-const cartOpen = ref(false)
-
-const cartItems = ref([
-  {
-    id: 1,
-    product_name: 'Organic Fuji Apples (1kg Pack)',
-    description: 'Fresh imported apples.',
-    image_url: 'https://picsum.photos/100?1',
-    unit_price: 3.99,
-    quantity: 1,
-    selected: true,
-  },
-  {
-    id: 2,
-    product_name: 'Whole Fresh Milk 1L',
-    description: 'Daily fresh milk.',
-    image_url: 'https://picsum.photos/100?2',
-    unit_price: 2.49,
-    quantity: 2,
-    selected: true,
-  },
-])
-
-const total = computed(() =>
-  cartItems.value
-    .filter(item => item.selected)
-    .reduce((sum, item) => sum + item.unit_price * item.quantity, 0)
-)
-
-const allSelected = computed({
-  get: () => cartItems.value.every(item => item.selected),
-  set: (value: boolean) => {
-    cartItems.value.forEach(item => item.selected = value)
-  }
-})
-
-const removeSelected = () => {
-  cartItems.value = cartItems.value.filter(item => !item.selected)
-}
 </script>
 
 <template>
@@ -159,10 +118,10 @@ const removeSelected = () => {
 
     <div class="dashboard-wrapper">
         <Header />
-        <Sidebar role="customer">
-            <CustomerNav />
+        <Sidebar role="admin">
+            <AdminNav />
             <template #icons>
-                <CustomerNavIcons />
+                <AdminNavIcons />
             </template>
         </Sidebar>
 
@@ -172,10 +131,10 @@ const removeSelected = () => {
             <div class="space-y-5 pb-12">
 
                 <div class="max-w-6xl mx-auto px-6 pt-6">
-                <Link href="/customer/stores">
+                <Link href="/admin/vendors">
                     <Button variant="ghost" class="gap-2 text-[#245c4a]">
                     <ArrowLeft class="w-4 h-4" />
-                    Back to Stores
+                    Back to Vendors
                     </Button>
                 </Link>
                 </div>
@@ -368,7 +327,7 @@ const removeSelected = () => {
                         </div>
 
                         <!-- Rating + Sold -->
-                        <div class="flex items-center justify-between text-xs text-muted-foreground">
+                        <div class="flex items-center justify-between text-xs text-muted-foreground pb-5">
 
                         <div class="flex items-center gap-1">
                             <span>⭐</span>
@@ -378,15 +337,6 @@ const removeSelected = () => {
                         <span>{{ product.sold_count }} sold</span>
 
                         </div>
-
-                        <!-- Add Button -->
-                        <Button
-                        size="sm"
-                        :disabled="!product.is_available"
-                        class="w-full mt-2 mb-4 bg-[#245c4a] hover:bg-[#1B4D3E] text-white"
-                        >
-                        Add to Cart
-                        </Button>
 
                     </CardContent>
 
@@ -398,168 +348,6 @@ const removeSelected = () => {
                 </div>
 
             </div>
-
-            <div
-            @click="cartOpen = true"
-            class="fixed bottom-6 right-6 z-50 cursor-pointer"
-            >
-            <div class="relative h-14 w-14 rounded-full bg-[#245c4a] hover:bg-[#1B4D3E] text-white flex items-center justify-center shadow-lg hover:shadow-xl transition">
-                
-                <ShoppingCart class="h-5 w-5" />
-
-                <!-- Item Count Badge -->
-                <span
-                v-if="cartItems.length"
-                class="absolute -top-1 -right-1 bg-[#C5A059] text-white text-xs h-5 w-5 rounded-full flex items-center justify-center"
-                >
-                {{ cartItems.length }}
-                </span>
-
-            </div>
-            </div>
-
-
-
-            <!-- Cart Modal -->
-            <transition name="fade">
-            <div
-                v-if="cartOpen"
-                class="fixed inset-0 z-40 bg-black/40"
-                @click="cartOpen = false"
-            />
-            </transition>
-
-            <transition name="slide">
-            <div
-                v-if="cartOpen"
-                class="fixed top-20 right-6 w-[380px] max-h-[80vh] bg-white dark:bg-muted rounded-2xl shadow-xl border border-border z-50 overflow-hidden flex flex-col"
-            >
-
-                <!-- Header -->
-                <div class="flex items-center justify-between p-4 border-b border-border">
-                <div class="flex items-center gap-2">
-                    <ShoppingCart class="h-6 w-6 text-[#245c4a]" />
-                    <h3 class="font-semibold text-[#245c4a]">Cart</h3>
-                </div>
-                <button @click="cartOpen = false">✕</button>
-                </div>
-
-                <!-- Shop Name -->
-                <div class="px-4 py-2 text-sm text-muted-foreground border-b border-border">
-                {{ store.name }}
-                </div>
-
-                <div class="flex items-center justify-between px-4 py-2 border-b border-border">
-                    <label class="flex items-center gap-2 text-sm">
-                        <input type="checkbox" v-model="allSelected" />
-                        Select All
-                    </label>
-                    <button
-                        class="text-xs text-red-500 hover:underline"
-                        @click="removeSelected"
-                    >
-                        Remove Selected
-                    </button>
-                </div>
-
-                <!-- Items -->
-                <div class="flex-1 overflow-y-auto p-4 space-y-4">
-
-                <div
-                    v-for="item in cartItems"
-                    :key="item.id"
-                    class="border rounded-xl p-3 space-y-2"
-                >
-                    <div class="flex gap-3">
-
-                    <input type="checkbox" v-model="item.selected" />
-
-                    <img
-                        :src="item.image_url"
-                        class="h-14 w-14 rounded-lg object-cover"
-                    />
-
-                    <div class="flex-1">
-                        <p class="text-sm font-medium line-clamp-1">
-                        {{ item.product_name }}
-                        </p>
-                        <p class="text-xs text-muted-foreground line-clamp-1">
-                        {{ item.description }}
-                        </p>
-                        <p class="text-sm font-semibold text-[#245c4a]">
-                        ${{ item.unit_price }}
-                        </p>
-                    </div>
-
-                    </div>
-
-                    <div class="flex items-center justify-between pt-2">
-
-                        <!-- Remove -->
-                        <button
-                            class="text-xs text-red-500 hover:underline"
-                            @click="cartItems = cartItems.filter(i => i.id !== item.id)"
-                        >
-                            Remove
-                        </button>
-
-                        <!-- Quantity Controls -->
-                        <div class="flex items-center gap-2 text-sm">
-
-                            <button
-                            class="h-7 w-7 border rounded-md flex items-center justify-center hover:bg-muted transition"
-                            @click="item.quantity > 1 && item.quantity--"
-                            >
-                            -
-                            </button>
-
-                            <span class="min-w-[20px] text-center">
-                            {{ item.quantity }}
-                            </span>
-
-                            <button
-                            class="h-7 w-7 border rounded-md flex items-center justify-center hover:bg-muted transition"
-                            @click="item.quantity++"
-                            >
-                            +
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                </div>
-
-                <!-- Footer -->
-                <div class="border-t border-border p-4 space-y-3">
-
-                <div class="flex justify-between font-semibold">
-                    <span>Total</span>
-                    <span class="text-[#245c4a]">
-                    ${{ total.toFixed(2) }}
-                    </span>
-                </div>
-
-                <Link
-                    href="/customer/cart"
-                    class="block text-sm text-[#245c4a] hover:underline"
-                >
-                    View all cart
-                </Link>
-
-                <Button class="w-full">
-                    Pre-order
-                </Button>
-
-                </div>
-
-            </div>
-            </transition>
         </main>
     </div>
-
 </template>
-
-
