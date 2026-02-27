@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Vendor;
 
 use App\Http\Controllers\Controller;
-use App\Models\Shop;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
 class StoreSetupController extends Controller
@@ -24,7 +24,7 @@ class StoreSetupController extends Controller
         ]);
 
         // Create store with current user as owner
-        Shop::create([
+        Store::create([
             'owner_id' => $request->user()->id,
             'store_name' => $validated['store_name'],
             'address' => $validated['address'],

@@ -9,15 +9,13 @@ return new class extends Migration {
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('owner_id')
-                ->constrained('users')
-                ->restrictOnDelete();
-
             $table->string('store_name', 255);
-            $table->text('address'); 
+            $table->text('address');
             $table->string('city', 100)->nullable();
+
             $table->decimal('latitude', 10, 8)->nullable();
             $table->decimal('longitude', 11, 8)->nullable();
+
             $table->string('phone', 20)->nullable();
             $table->string('operating_hours', 255)->nullable();
             $table->boolean('is_active')->default(true);
