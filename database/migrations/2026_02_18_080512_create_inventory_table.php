@@ -15,20 +15,16 @@ return new class extends Migration {
 
             $table->foreignId('product_id')
                 ->constrained('products')
-                ->restrictOnDelete();
+                ->cascadeOnDelete();
 
             $table->unsignedInteger('stock_level')->default(0);
-            $table->decimal('unit_price', 10, 2);
-            $table->decimal('cost_price', 10, 2)->nullable();
             $table->unsignedInteger('reorder_level')->default(10);
             $table->boolean('is_available')->default(true);
 
             $table->timestamps();
 
             $table->unique(['store_id', 'product_id']);
-            $table->index(['product_id', 'unit_price']);
             $table->index(['store_id', 'is_available']);
-            $table->index(['store_id', 'unit_price']);
         });
     }
 

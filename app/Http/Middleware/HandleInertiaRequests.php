@@ -40,7 +40,7 @@ class HandleInertiaRequests extends Middleware
 
         // Check if vendor has a store
         if ($user && $user->role === 'vendor') {
-            $hasStore = \App\Models\Shop::where('owner_id', $user->id)->exists();
+            $hasStore = \App\Models\Store::where('owner_id', $user->id)->exists();
         }
 
         return [

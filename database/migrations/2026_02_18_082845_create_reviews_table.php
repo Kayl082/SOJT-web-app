@@ -9,27 +9,20 @@ return new class extends Migration {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
 
+            $table->foreignId('store_id')
+                ->constrained('stores')
+                ->cascadeOnDelete();
+
             $table->foreignId('customer_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
 
-            $table->foreignId('store_id')
-                ->constrained('stores')
-                ->restrictOnDelete();
-
-            $table->foreignId('order_id')
-                ->constrained('orders')
-                ->restrictOnDelete();
-
-            $table->enum('rating', ['1','2','3','4','5']);
-
+            $table->unsignedTinyInteger('rating');
             $table->text('comment')->nullable();
 
             $table->timestamps();
 
-            $table->index(['store_id', 'created_at']);
-
-            $table->unique(['customer_id', 'order_id']);
+            $table->index(['store_id', 'rating']);
         });
     }
 

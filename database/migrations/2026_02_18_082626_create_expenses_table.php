@@ -13,21 +13,13 @@ return new class extends Migration {
                 ->constrained('stores')
                 ->cascadeOnDelete();
 
-            $table->string('expense_type', 100);
+            $table->string('description');
             $table->decimal('amount', 10, 2);
-            $table->text('description')->nullable();
-            $table->date('expense_date');
-            $table->string('receipt_img', 500)->nullable();
-
-            $table->foreignId('created_by')
-                ->nullable()
-                ->constrained('users')
-                ->nullOnDelete();
+            $table->date('expense_date')->nullable();
 
             $table->timestamps();
 
-            $table->index('expense_date');
-            $table->index('expense_type');
+            $table->index('store_id');
         });
     }
 
