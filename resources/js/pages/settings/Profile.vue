@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/DeleteUser.vue';
 import Heading from '@/components/Heading.vue';
@@ -7,11 +8,12 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AppLayout from '@/layouts/AppLayout.vue';
+import VendorLayout from '@/layouts/VendorLayout.vue';
+import CustomerLayout from '@/layouts/CustomerLayout.vue';
+import AdminLayout from '@/layouts/AdminLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
-import { type BreadcrumbItem } from '@/types';
 
 type Props = {
     mustVerifyEmail: boolean;
@@ -20,19 +22,35 @@ type Props = {
 
 defineProps<Props>();
 
-const breadcrumbItems: BreadcrumbItem[] = [
-    {
-        title: 'Profile settings',
-        href: edit().url,
-    },
-];
-
 const page = usePage();
 const user = page.props.auth.user;
+const userRole = computed(() => {
+    // Try direct role property first
+    if (user?.role) {
+        return user.role;
+    }
+    // Fallback to roles array
+    if (user?.roles && user.roles.length > 0) {
+        return user.roles[0].name;
+    }
+    return 'customer';
+});
+
+// Determine which layout to use based on role
+const LayoutComponent = computed(() => {
+    switch (userRole.value) {
+        case 'admin':
+            return AdminLayout;
+        case 'vendor':
+            return VendorLayout;
+        default:
+            return CustomerLayout;
+    }
+});
 </script>
 
 <template>
-    <AppLayout :breadcrumbs="breadcrumbItems">
+    <component :is="LayoutComponent">
         <Head title="Profile settings" />
 
         <h1 class="sr-only">Profile Settings</h1>
@@ -126,5 +144,5 @@ const user = page.props.auth.user;
 
             <DeleteUser />
         </SettingsLayout>
-    </AppLayout>
+    </component>
 </template>

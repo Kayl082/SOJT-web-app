@@ -37,17 +37,31 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
         $hasStore = false;
+        $userRole = null;
 
-        // Check if vendor has a store
-        if ($user && $user->role === 'vendor') {
-            $hasStore = \App\Models\Shop::where('owner_id', $user->id)->exists();
+        if ($user) {
+            // Try to get role from column first, fallback to Spatie roles
+            if (isset($user->role)) {
+                $userRole = $user->role;
+            } else {
+                $roles = $user->getRoleNames();
+                $userRole = $roles->first() ?? 'customer';
+            }
+
+            // Check if vendor has a store
+            if ($userRole === 'vendor') {
+                $hasStore = \App\Models\Shop::where('owner_id', $user->id)->exists();
+            }
         }
 
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => $user,
+                'user' => $user ? array_merge($user->toArray(), [
+                    'role' => $userRole,
+                    'roles' => $userRole ? [['name' => $userRole]] : []
+                ]) : null,
                 'hasStore' => $hasStore,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',

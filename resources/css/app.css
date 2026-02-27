@@ -171,4 +171,15 @@
     body {
         @apply bg-background text-foreground;
     }
+    
+    /* Prevent black background on overscroll */
+    html {
+        background: #F5F5F5;
+        overscroll-behavior-y: none;
+    }
+    
+    body {
+        background: #F5F5F5;
+        overscroll-behavior-y: none;
+    }
 }
