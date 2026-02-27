@@ -8,4 +8,12 @@ Route::middleware(['auth', 'verified', 'role:customer'])->prefix('customer')->na
     Route::get('/products', fn() => inertia('customer/Products'))->name('products');
     Route::get('/orders', fn() => inertia('customer/Orders'))->name('orders');
     Route::get('/profile', fn() => inertia('customer/Profile'))->name('profile');
+    
+    Route::get('/stores/{id}', function ($id) {
+        return inertia('customer/StoreDetails', [
+            'storeId' => $id,
+        ]);
+    })->name('stores.show');
+
+    Route::get('/cart', fn() => inertia('customer/Cart'))->name('cart');
 });
